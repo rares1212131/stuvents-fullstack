@@ -1,0 +1,90 @@
+
+:root {
+  --primary-color: #007bff; 
+  --primary-hover-color: #0056b3; 
+  --text-color-dark: #333333; /* Dark grey for main text - easier to read than pure black */
+  --text-color-light: #6c757d; /* Lighter grey for secondary text (like dates) */
+  --background-color-main: #f8f9fa; /* A very light grey for the page background */
+  --background-color-card: #ffffff; /* White for cards and containers */
+  --border-color: #dee2e6; /* A light border color */
+  --font-family-main: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+/* --- 2. Basic Reset & Box Sizing --- */
+/* This removes inconsistent browser default styles and makes layouts more predictable. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-main);
+  background-color: var(--background-color-main);
+  color: var(--text-color-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: scroll;
+}
+
+/* Remove default margins from common elements to prevent unexpected spacing */
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+
+/* --- 3. Global Styles for Basic Elements --- */
+/* Styles for common HTML tags that will apply everywhere. */
+
+a {
+  color: inherit; /* Links will take the color of their parent by default */
+  text-decoration: none; /* Remove underlines from all links */
+}
+
+img {
+  max-width: 100%;
+  display: block; /* Removes the small space below images */
+}
+
+
+/* --- 4. Reusable Utility Classes --- */
+/* These are your "toolkit" classes, inspired by your e-commerce project.
+   You can add these classNames to any element in your JSX for consistent styling. */
+
+/* A primary button style for all important actions */
+.button-primary {
+  display: inline-block;
+  font-family: var(--font-family-main);
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: var(--primary-color);
+  border: 1px solid transparent;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.button-primary:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.button-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+
+/* A container class to center your main content on the page */
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}

@@ -1,0 +1,162 @@
+/* The dark, semi-transparent background that covers the whole page */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75); /* A darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensures the modal is on top of all other content */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* The main container for the modal content */
+.modal-content {
+  background-color: #212529; /* Matches your site's dark theme */
+  color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px solid #495057;
+  transform: scale(0.95);
+  animation: scaleUp 0.3s ease-in-out forwards;
+}
+
+/* Header section with title and close button */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #495057;
+  padding-bottom: 1rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: #adb5bd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-button:hover {
+  color: #f8f9fa;
+}
+
+/* Main body of the modal */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* The box showing the summary of what's being purchased */
+.order-summary {
+  background-color: #343a40;
+  padding: 1.25rem;
+  border-radius: 8px;
+}
+
+.order-summary p {
+  margin: 0.5rem 0;
+  color: #ced4da;
+}
+
+.order-summary p strong {
+  color: #f8f9fa;
+}
+
+.total-cost {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #495057;
+}
+
+/* Mock credit card form section */
+.payment-form {
+  margin-top: 1rem;
+}
+
+.payment-form h4 {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.mock-notice {
+  font-size: 0.8rem;
+  color: #adb5bd;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  color: #adb5bd;
+}
+
+.form-group input {
+  background-color: #495057;
+  border: 1px solid #6c757d;
+  color: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1; /* Makes the inputs in a row share space equally */
+}
+
+/* Footer section for the final action button */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+/* Re-use your existing primary button style */
+.modal-footer .button-primary {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 0.85rem;
+}
+
+/* Animations for a smoother appearance */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

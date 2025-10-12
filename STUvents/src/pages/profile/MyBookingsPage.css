@@ -1,0 +1,79 @@
+.my-bookings-page {
+  padding-top: 80px; /* Space for the fixed header */
+  color: #f8f9fa;
+}
+
+.bookings-hero {
+  padding: 4rem 0;
+  background-color: #212529;
+  text-align: center;
+  border-bottom: 1px solid #495057;
+}
+
+.bookings-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.bookings-hero p {
+  font-size: 1.1rem;
+  color: #adb5bd;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.bookings-list-container {
+  padding: 3rem 0;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px; /* Constrain the width for readability */
+  margin: 0 auto;
+}
+
+.booking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  background-color: #2c3034;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid #495057;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.booking-event-details h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.booking-event-details p {
+  font-size: 0.9rem;
+  color: #adb5bd;
+}
+
+.booking-ticket-details {
+  text-align: right;
+}
+
+.booking-ticket-details .ticket-name {
+  font-size: 1rem;
+  font-weight: 500;
+  display: block; /* Make it take its own line */
+}
+
+.booking-ticket-details .ticket-price {
+  font-size: 0.9rem;
+  color: #adb5bd;
+}

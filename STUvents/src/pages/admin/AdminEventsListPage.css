@@ -1,0 +1,78 @@
+/* src/pages/admin/AdminEventsListPage.css */
+
+.admin-events-page {
+  padding: 2rem 0 4rem 0;
+  color: #f8f9fa;
+}
+
+.admin-events-header {
+  padding-top:80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #495057;
+}
+
+.admin-events-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color:#212529;
+}
+
+.events-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #212529;
+  border-radius: 8px;
+  overflow: hidden; /* To make border-radius work on tables */
+}
+
+.events-list-table th,
+.events-list-table td {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #495057;
+}
+
+.events-list-table thead {
+  background-color: #343a40;
+}
+
+.events-list-table th {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.events-list-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.event-actions .button-secondary,
+.event-actions .button-primary {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem; /* smaller buttons for table */
+  font-size: 0.9rem;
+}
+
+.button-secondary.dark-bg {
+    background-color: #495057;
+    border-color: #6c757d;
+    color: #f8f9fa;
+}
+
+.button-secondary.dark-bg:hover {
+    background-color: #6c757d;
+}
+
+.button-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+.button-danger:hover {
+    background-color: #c82333;
+}

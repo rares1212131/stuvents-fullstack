@@ -1,0 +1,61 @@
+/* src/components/EventCard.css */
+
+.event-card-v2 {
+  display: block; /* Important for the link to behave like a block container */
+  background-color: #212529; /* A professional dark color */
+  color: #f8f9fa; /* A light, off-white for text */
+  border-radius: 16px; /* Gives the nice rounded corners */
+  overflow: hidden; /* Ensures the image corners are also rounded */
+  text-decoration: none; /* Removes the default link underline */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.event-card-v2:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+}
+
+.event-card-image {
+  width: 100%;
+  height: 160px; /* Adjust height as you like */
+  object-fit: cover; /* This makes the image cover the area without distortion */
+  display: block;
+}
+
+.event-card-content {
+  padding: 1.5rem;
+}
+
+.event-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 1.5rem; /* Space between title and info items */
+  letter-spacing: 0.5px;
+}
+
+.event-card-info {
+  display: flex;
+  flex-direction: column; /* Stack the info items vertically */
+  gap: 1rem; /* Creates space between each info item */
+}
+
+.info-item {
+  display: flex; /* This is key: aligns icon and text side-by-side */
+  align-items: center; /* Vertically centers the icon with the text */
+  gap: 1rem; /* Space between the icon and the text */
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  /* This CSS filter is a trick to turn black SVG icons white */
+  filter: invert(100%) sepia(0%) saturate(7500%) hue-rotate(200deg) brightness(100%) contrast(100%);
+}
+
+.info-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #adb5bd; /* A slightly dimmer white for the info text */
+}

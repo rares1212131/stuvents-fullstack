@@ -1,0 +1,74 @@
+/* src/components/admin/RoleManagementModal.css */
+
+.modal-body .role-selection-prompt {
+  margin-bottom: 1.5rem;
+  color: #adb5bd;
+}
+
+.modal-body .roles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* Increased gap for better spacing between rows */
+}
+
+/* This is the key fix: using flexbox alignment */
+.modal-body .role-label {
+  display: flex;
+  align-items: center; /* Vertically aligns the checkbox and text */
+  gap: 1rem; /* Creates space between the checkbox and the text */
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.modal-body .role-checkbox {
+  /* Removing transform and setting size directly for robust alignment */
+  margin: 0; /* Resets any default browser margin */
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0; /* Prevents the checkbox from being squished */
+  cursor: pointer;
+}
+
+.modal-body .role-name {
+  /* The text part of the label */
+  line-height: 1; /* Ensures text doesn't have extra line-height affecting alignment */
+}
+
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Common button styles */
+.button-primary {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.button-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+  background-color: #5a6268;
+}

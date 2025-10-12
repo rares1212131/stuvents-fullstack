@@ -1,0 +1,62 @@
+/* src/components/HeroSearchBar.css */
+
+.hero-search-bar {
+  background-color: white;
+  border-radius: 50px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  display: flex;
+  width: 100%;
+  max-width: 600px; /* Can be smaller now */
+  margin: 2rem auto 0;
+  border: 1px solid #e0e0e0;
+}
+
+/* This class is now the main section and takes up all available space */
+.search-section.where-section {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+}
+
+.search-section label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.search-section select {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
+  background-color: transparent;
+  color: #6c757d;
+  font-family: inherit;
+  cursor: pointer; /* Indicates the select is interactive */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.search-actions {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0 0.25rem;
+}
+
+.reset-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 20px;
+  transition: background-color 0.2s;
+}
+
+.reset-button:hover {
+  background-color: #f1f1f1;
+}

@@ -1,0 +1,121 @@
+/* src/pages/admin/EventEditorPage.css */
+
+.event-editor-page {
+  padding: 2rem 0 4rem 0;
+  max-width: 800px;
+  margin: 0 auto;
+  color: #f8f9fa;
+}
+
+.editor-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.editor-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.editor-header p {
+  color: #adb5bd;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-section {
+  background-color: #212529;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.form-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #495057;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.full-width {
+  grid-column: 1 / -1; /* Make an item span the full grid width */
+}
+
+/* Basic Form Group Styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #ced4da;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem;
+  background-color: #343a40;
+  color: #f8f9fa;
+  border: 1px solid #495057;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Ticket Types Section */
+.ticket-type-row {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr auto;
+  gap: 1rem;
+  align-items: flex-end; /* Aligns the button with the bottom of inputs */
+  margin-bottom: 1rem;
+}
+
+.ticket-type-actions {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.event-image-preview {
+  width: 100%;
+  max-width: 400px; /* Or a size you prefer */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #495057;
+  margin-bottom: 1rem;
+  background-color: #343a40;
+}
