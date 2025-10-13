@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { PriceFilterModal } from './PriceFilterModal';
 import { CategoryFilterModal } from './CategoryFilterModal';
-import './SecondaryFilters.css';
+import './SecondaryFIlters.css';
 
 export function SecondaryFilters({ categories, currentFilters, onFilterChange }) {
   const [activeModal, setActiveModal] = useState(null);
