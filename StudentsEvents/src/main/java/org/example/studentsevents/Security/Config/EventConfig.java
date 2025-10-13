@@ -13,6 +13,7 @@ import org.example.studentsevents.model.Event;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,6 +36,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -49,6 +51,10 @@ public class EventConfig {
     private final AuthTokenFilter authTokenFilter;
     private final CustomOAuth2UserService customOAuth2UserService; // <-- NEW INJECTION
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler; // <-- NEW INJECTION
+
+    // Read allowed origins from environment variable (comma-separated). Provide sensible default for local dev + prod.
+    @Value("${CORS_ALLOWED_ORIGINS:http://localhost:5173,https://stuvents-fullstack.vercel.app}")
+    private String corsAllowedOrigins;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -87,29 +93,48 @@ public class EventConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    /**
+     * Global CORS configuration.
+     *
+     * - Reads CORS_ALLOWED_ORIGINS env var (comma separated).
+     * - If any pattern contains '*' you will use allowedOriginPatterns for flexibility.
+     * - Allows credentials; do not use '*' origin when allowCredentials=true in production.
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // This is the crucial part: specify the exact URL of your frontend
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        // Allow common HTTP methods
+
+        // parse env var into list
+        List<String> origins = Arrays.stream(corsAllowedOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+
+        // If you want wildcard support (e.g. "https://*.vercel.app") use allowedOriginPatterns
+        boolean containsPattern = origins.stream().anyMatch(o -> o.contains("*"));
+
+        if (containsPattern) {
+            // Spring will match patterns when using allowedOriginPatterns
+            configuration.setAllowedOriginPatterns(origins);
+        } else {
+            configuration.setAllowedOrigins(origins);
+        }
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        // Allow all headers, which is fine for development
         configuration.setAllowedHeaders(List.of("*"));
-        // Allow credentials (like cookies or auth tokens) to be sent
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Apply this configuration to all paths in your application
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    // +++ END OF NEW CODE                                         +++
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                // wire the CorsConfigurationSource into the security filter chain
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
@@ -120,31 +145,39 @@ public class EventConfig {
                         )
                         .successHandler(oAuth2LoginSuccessHandler) // Use our custom success handler
                 )
-                .authorizeHttpRequests(auth -> auth.
-                        requestMatchers("/api/debug/**").permitAll() // <-- ADD THIS LINE
-                        .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/cities/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/images/**").permitAll()
-                        .requestMatchers("/api/auth/register").permitAll()
-                        .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/auth/verify-email").permitAll()
-                        // ★★★ ADD THESE TWO LINES ★★★
-                        .requestMatchers("/api/auth/forgot-password").permitAll()
-                        .requestMatchers("/api/auth/reset-password").permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        // Always allow preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // --- 2. ADMIN-ONLY ENDPOINTS ---
+                        // Public auth paths (both root and /api prefix) - adjust if your controllers are different
+                        .requestMatchers("/auth/**", "/api/auth/**").permitAll()
+
+                        // Public GET endpoints (both root and /api prefix)
+                        .requestMatchers(HttpMethod.GET, "/events/**", "/api/events/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categories/**", "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cities/**", "/api/cities/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/images/**", "/api/images/**").permitAll()
+
+                        // Additional individual permits (optional redundancy)
+                        .requestMatchers("/auth/register", "/api/auth/register").permitAll()
+                        .requestMatchers("/auth/login", "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/verify-email", "/api/auth/verify-email").permitAll()
+                        .requestMatchers("/auth/forgot-password", "/api/auth/forgot-password").permitAll()
+                        .requestMatchers("/auth/reset-password", "/api/auth/reset-password").permitAll()
+
+                        // Debug / health endpoints (optional)
+                        .requestMatchers("/api/debug/**", "/debug/**").permitAll()
+
+                        // ADMIN endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/categories", "/api/cities").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/categories/**", "/api/cities/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/categories/**", "/api/cities/**").hasRole("ADMIN")
 
-                        // --- 3. ORGANIZER-ONLY ENDPOINTS (Admins can also access) ---
+                        // ORGANIZER endpoints
                         .requestMatchers("/api/organizer/**").hasAnyRole("ORGANIZER", "ADMIN")
 
-                        // --- 4. ANY OTHER REQUEST MUST BE AUTHENTICATED ---
-                        // This is a catch-all for any endpoint not listed above.
-                        // Examples: /api/auth/me, /api/bookings, /api/users/{id} etc.
+                        // All other requests require authentication
                         .anyRequest().authenticated()
                 );
 
@@ -154,4 +187,3 @@ public class EventConfig {
         return http.build();
     }
 }
-
