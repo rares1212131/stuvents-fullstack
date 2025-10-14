@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value; //
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -43,6 +44,9 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final UserService userService;
     private final EmailService emailService;
+
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
@@ -68,7 +72,7 @@ public class AuthService {
 
         User savedUser = userRepository.save(user);
 
-        String verificationLink = "http://localhost:5173/verify-email?token=" + token;
+        String verificationLink = frontendUrl + "/verify-email?token=" + token;
         String emailBody = "Welcome to STUvents!\n\nPlease click the link below to verify your email address and activate your account:\n" + verificationLink + "\n\nThis link will expire in 24 hours.";
         System.out.println("--- 1. ATTEMPTING TO SEND VERIFICATION EMAIL to: " + savedUser.getEmail() + " ---");
         emailService.sendSimpleEmail(savedUser.getEmail(), "STUvents Email Verification", emailBody);
@@ -135,7 +139,7 @@ public class AuthService {
 
             userRepository.save(user);
 
-            String resetLink = "http://localhost:5173/reset-password?token=" + token;
+            String resetLink = frontendUrl + "/reset-password?token=" + token;
             String emailBody = "You have requested to reset your password.\n\n"
                     + "Please click the link below to set a new password:\n" + resetLink + "\n\n"
                     + "If you did not request this, please ignore this email. This link will expire in 1 hour.";
