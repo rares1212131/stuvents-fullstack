@@ -1,4 +1,4 @@
-// In file: src/services/adminService.js (CORRECTED)
+// In file: src/services/adminService.js (COMPLETE FILE)
 
 import api from '../api/api';
 
@@ -50,4 +50,11 @@ export const updateCity = (id, name) => {
 
 export const deleteCity = (id) => {
   return api.delete(`/cities/${id}`);
+};
+
+
+// ★★★ ADD THIS NEW FUNCTION ★★★
+// This function sends a DELETE request to the /api/users/{userId} endpoint
+export const deleteUser = (userId) => {
+  return api.delete(`/users/${userId}`);
 };

@@ -1,10 +1,10 @@
-// In file: src/pages/AdminUsersListPage.jsx (REFACTORED and COMPLETE)
+// In file: src/pages/admin/AdminUsersListPage.jsx (COMPLETE FILE)
 
 import { useState, useEffect } from 'react';
 import { Header } from '../../components/layout/Header';
 import { RoleManagementModal } from '../../components/admin/RoleManagementModal';
 import * as adminService from '../../services/adminService';
-import './AdminEventsListPage.css'; 
+import './AdminEventsListPage.css';
 
 export function AdminUsersListPage() {
   const [users, setUsers] = useState([]);
@@ -17,7 +17,7 @@ export function AdminUsersListPage() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await adminService.getAllUsers(); 
+      const response = await adminService.getAllUsers();
       setUsers(response.data);
     } catch (err) {
       setError('Failed to fetch users.');
@@ -41,7 +41,26 @@ export function AdminUsersListPage() {
       console.error(err);
     }
   };
-  
+
+  // ★★★ 1. ADD THIS NEW HANDLER FUNCTION ★★★
+  const handleDeleteUser = async (userId, userEmail) => {
+    // Add a confirmation prompt to prevent accidental deletions
+    if (!window.confirm(`Are you sure you want to permanently delete the user: ${userEmail}? This action cannot be undone.`)) {
+      return; // If the admin clicks "Cancel", stop the function
+    }
+
+    try {
+      // Call the new service function we created in Step 1
+      await adminService.deleteUser(userId);
+      alert('User deleted successfully!');
+      // Refresh the list of users to remove the deleted one from the view
+      fetchUsers();
+    } catch (err) {
+      alert('Failed to delete user. The user might be an organizer of an event.');
+      console.error(err);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -61,7 +80,7 @@ export function AdminUsersListPage() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Actions</th>
+                <th style={{width: '300px'}}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +92,11 @@ export function AdminUsersListPage() {
                   <td>{user.roles.map(r => r.replace('ROLE_', '')).join(', ')}</td>
                   <td className="event-actions">
                     <button onClick={() => setSelectedUser(user)} className="button-secondary">Manage Roles</button>
+                    
+                    {/* ★★★ 2. ADD THE DELETE BUTTON HERE ★★★ */}
+                    <button onClick={() => handleDeleteUser(user.id, user.email)} className="button-secondary button-danger">
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -82,10 +106,10 @@ export function AdminUsersListPage() {
       </div>
 
       {selectedUser && (
-        <RoleManagementModal 
+        <RoleManagementModal
           user={selectedUser}
           allRoles={ALL_PLATFORM_ROLES}
-          onClose={() => setSelectedUser(null)} 
+          onClose={() => setSelectedUser(null)}
           onSave={handleRoleChange}
         />
       )}

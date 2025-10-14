@@ -26,22 +26,17 @@ public class EmailService {
     public void sendSimpleEmail(String to, String subject, String text) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            // Set the 'from' address. Note: With services like Brevo or SendGrid,
-            // this might be overridden by their settings, but it's good practice to set it.
-            message.setFrom("rrspld@gmail.com");
+            message.setFrom(fromEmail);
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
-
             mailSender.send(message);
             System.out.println("Verification email sent successfully to " + to);
         } catch (Exception e) {
-            // In a production app, you would use a logger like SLF4J
-            // For now, printing to the console is fine for debugging.
+            // Log the error as before...
             System.err.println("Error while sending email to " + to + ": " + e.getMessage());
-            // It's often better not to throw an exception here, so a failed email
-            // doesn't cause the entire registration process to fail.
-            // We can add more robust retry logic or queuing later if needed.
+            // ...but now, re-throw it so the AuthService knows something went wrong.
+            throw new RuntimeException("Failed to send email", e);
         }
     }
 }
