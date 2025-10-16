@@ -1,3 +1,5 @@
+// FILE: D:\students-fullstack\StudentsEvents\src\main\java\org\example\studentsevents\Service\EventService.java
+
 package org.example.studentsevents.Service;
 
 import com.google.maps.model.LatLng;
@@ -14,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -32,16 +33,13 @@ public class EventService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final ImageService imageService;
+    private final ImageService imageService; // The refactored Cloudinary service
     private final GeocodingService geocodingService;
 
     // =====================================================================================
     // == 1. PUBLIC-FACING METHODS (For any site visitor)
     // =====================================================================================
 
-    /**
-     * Retrieves a single event for public viewing, with limited information.
-     */
     @Transactional(readOnly = true)
     public EventResponse getPublicEventById(Long id) {
         Event event = eventRepository.findById(id)
@@ -49,9 +47,6 @@ public class EventService {
         return mapToPublicEventResponse(event);
     }
 
-    /**
-     * Searches for events for public viewing, with limited information.
-     */
     @Transactional(readOnly = true)
     public Page<EventResponse> searchPublicEvents(String eventName, String categoryName, String cityName, Pageable pageable) {
         Page<Event> eventPage;
@@ -73,9 +68,6 @@ public class EventService {
     // == 2. ORGANIZER-FOCUSED METHODS (Requires ownership, or Admin override)
     // =====================================================================================
 
-    /**
-     * Creates a new event, setting the current user as the organizer.
-     */
     @Transactional
     public OrganizerEventResponse createEventForOrganizer(EventRequest eventRequest, MultipartFile imageFile) {
         User currentUser = getCurrentUser();
@@ -85,10 +77,13 @@ public class EventService {
         Event newEvent = modelMapper.map(eventRequest, Event.class);
         newEvent.setCategory(category);
         newEvent.setCity(city);
-        newEvent.setOrganizer(currentUser); // Set ownership
+        newEvent.setOrganizer(currentUser);
 
+        // *** MODIFIED PART ***
         if (imageFile != null && !imageFile.isEmpty()) {
-            newEvent.setEventImage(new Image(imageService.storeFile(imageFile)));
+            // The storeFile method now returns a full Cloudinary URL
+            String imageUrl = imageService.storeFile(imageFile);
+            newEvent.setEventImageUrl(imageUrl);
         }
 
         List<TicketType> ticketTypes = eventRequest.getTicketTypes().stream()
@@ -115,27 +110,18 @@ public class EventService {
         return mapToOrganizerEventResponse(savedEvent);
     }
 
-    /**
-     * Retrieves a paginated list of events owned by the specified organizer.
-     */
     @Transactional(readOnly = true)
     public Page<OrganizerEventResponse> getEventsForOrganizer(User organizer, Pageable pageable) {
         return eventRepository.findByOrganizer(organizer, pageable)
                 .map(this::mapToOrganizerEventResponse);
     }
 
-    /**
-     * Retrieves a single event with detailed management info, checking for ownership.
-     */
     @Transactional(readOnly = true)
     public OrganizerEventResponse getEventForOrganizerById(Long eventId) {
         Event event = findAndVerifyOwnership(eventId);
         return mapToOrganizerEventResponse(event);
     }
 
-    /**
-     * Updates an event, checking for ownership first.
-     */
     @Transactional
     public OrganizerEventResponse updateEventForOrganizer(Long eventId, EventRequest eventRequest, MultipartFile imageFile) {
         Event existingEvent = findAndVerifyOwnership(eventId);
@@ -146,8 +132,10 @@ public class EventService {
         existingEvent.setCategory(category);
         existingEvent.setCity(city);
 
+        // *** MODIFIED PART ***
         if (imageFile != null && !imageFile.isEmpty()) {
-            existingEvent.setEventImage(new Image(imageService.storeFile(imageFile)));
+            String imageUrl = imageService.storeFile(imageFile);
+            existingEvent.setEventImageUrl(imageUrl);
         }
 
         // Complex logic to safely add, update, or remove ticket types
@@ -179,24 +167,17 @@ public class EventService {
         } catch (Exception e) {
             System.err.println("Could not geocode address during event update. Saving event without coordinates.");
         }
-        
 
         Event updatedEvent = eventRepository.save(existingEvent);
         return mapToOrganizerEventResponse(updatedEvent);
     }
 
-    /**
-     * Deletes an event, checking for ownership first.
-     */
     @Transactional
     public void deleteEventForOrganizer(Long eventId) {
         Event eventToDelete = findAndVerifyOwnership(eventId);
         eventRepository.delete(eventToDelete);
     }
 
-    /**
-     * Gets a list of attendees for an event, checking for ownership first.
-     */
     @Transactional(readOnly = true)
     public Page<OrganizerBookingResponse> getBookingsForEvent(Long eventId, Pageable pageable) {
         findAndVerifyOwnership(eventId);
@@ -206,56 +187,37 @@ public class EventService {
 
     @Transactional
     public OrganizerTicketTypeResponse addTicketTypeToEvent(Long eventId, TicketTypeRequest ticketTypeRequest) {
-        Event event = findAndVerifyOwnership(eventId); // Security check
-
+        Event event = findAndVerifyOwnership(eventId);
         TicketType newTicketType = modelMapper.map(ticketTypeRequest, TicketType.class);
-        newTicketType.setEvent(event); // Link the ticket type to the event
+        newTicketType.setEvent(event);
         event.getTicketTypes().add(newTicketType);
-
         eventRepository.save(event);
-
-        // Return the newly created ticket type with its generated ID
         TicketType persistedTicketType = event.getTicketTypes().get(event.getTicketTypes().size() - 1);
         return mapToOrganizerTicketTypeResponse(persistedTicketType);
     }
 
-    /**
-     * Updates an existing ticket type on an event, checking for ownership first.
-     */
     @Transactional
     public OrganizerTicketTypeResponse updateTicketType(Long eventId, Long ticketTypeId, TicketTypeRequest ticketTypeRequest) {
-        Event event = findAndVerifyOwnership(eventId); // Security check
-
+        Event event = findAndVerifyOwnership(eventId);
         TicketType ticketTypeToUpdate = event.getTicketTypes().stream()
                 .filter(tt -> tt.getId().equals(ticketTypeId))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("TicketType with id " + ticketTypeId + " not found in event " + eventId));
-
-        // Use ModelMapper to update the fields
         modelMapper.map(ticketTypeRequest, ticketTypeToUpdate);
-
         eventRepository.save(event);
         return mapToOrganizerTicketTypeResponse(ticketTypeToUpdate);
     }
 
-    /**
-     * Deletes a ticket type from an event, checking for ownership first.
-     */
     @Transactional
     public void deleteTicketType(Long eventId, Long ticketTypeId) {
-        Event event = findAndVerifyOwnership(eventId); // Security check
-
-
+        Event event = findAndVerifyOwnership(eventId);
         long bookingCount = bookingRepository.countByTicketTypeId(ticketTypeId);
-
-        // If one or more bookings are found, block the deletion and throw a clear error.
         if (bookingCount > 0) {
             throw new IllegalStateException(
                     "This ticket type cannot be deleted because " + bookingCount + " ticket(s) have already been sold. " +
                             "If you wish to stop sales, please edit the event and remove this ticket type or reduce its quantity."
             );
         }
-
         boolean removed = event.getTicketTypes().removeIf(tt -> tt.getId().equals(ticketTypeId));
         if (!removed) {
             throw new RuntimeException("TicketType with id " + ticketTypeId + " not found in event " + eventId);
@@ -263,22 +225,15 @@ public class EventService {
         eventRepository.save(event);
     }
 
-
     // =====================================================================================
     // == 3. ADMIN-ONLY METHODS
     // =====================================================================================
 
-    /**
-     * Retrieves a paginated list of ALL events on the platform for admin oversight.
-     */
     @Transactional(readOnly = true)
     public Page<AdminEventResponse> getAllEventsForAdmin(Pageable pageable) {
         return eventRepository.findAll(pageable).map(this::mapToAdminEventResponse);
     }
 
-    /**
-     * Retrieves a single event with detailed management info for an admin, bypassing ownership checks.
-     */
     @Transactional(readOnly = true)
     public AdminEventResponse getEventForAdminById(Long id) {
         Event event = eventRepository.findById(id)
@@ -307,19 +262,15 @@ public class EventService {
         return event;
     }
 
-    private String createImageUrl(String fileName) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/images/").path(fileName).toUriString();
-    }
+    // *** DELETED createImageUrl() method ***
 
     private EventResponse mapToPublicEventResponse(Event event) {
         EventResponse response = modelMapper.map(event, EventResponse.class);
         response.setTicketTypes(event.getTicketTypes().stream()
                 .map(this::mapToTicketTypeResponseWithAvailability)
                 .collect(Collectors.toList()));
-        if (event.getEventImage() != null) {
-            response.setEventImageUrl(createImageUrl(event.getEventImage().getFileName()));
-        }
+        // *** MODIFIED PART ***
+        response.setEventImageUrl(event.getEventImageUrl()); // Directly use the URL from the entity
         return response;
     }
 
@@ -328,9 +279,8 @@ public class EventService {
         response.setTicketTypes(event.getTicketTypes().stream()
                 .map(this::mapToOrganizerTicketTypeResponse)
                 .collect(Collectors.toList()));
-        if (event.getEventImage() != null) {
-            response.setEventImageUrl(createImageUrl(event.getEventImage().getFileName()));
-        }
+        // *** MODIFIED PART ***
+        response.setEventImageUrl(event.getEventImageUrl()); // Directly use the URL from the entity
         return response;
     }
 
@@ -339,9 +289,8 @@ public class EventService {
         response.setTicketTypes(event.getTicketTypes().stream()
                 .map(this::mapToOrganizerTicketTypeResponse)
                 .collect(Collectors.toList()));
-        if (event.getEventImage() != null) {
-            response.setEventImageUrl(createImageUrl(event.getEventImage().getFileName()));
-        }
+        // *** MODIFIED PART ***
+        response.setEventImageUrl(event.getEventImageUrl()); // Directly use the URL from the entity
         return response;
     }
 

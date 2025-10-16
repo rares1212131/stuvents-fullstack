@@ -53,10 +53,8 @@ public class Event {
     )
     private List<TicketType> ticketTypes = new ArrayList<>();
 
-    // ... inside the Event class
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
-    private Image eventImage;
+    @Column(length = 512)
+    private String eventImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id", nullable = false)

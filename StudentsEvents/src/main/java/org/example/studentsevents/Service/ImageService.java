@@ -1,53 +1,35 @@
-
-
-// (Full and final version for Priority 1)
+// FILE: D:\students-fullstack\StudentsEvents\src\main\java\org\example\studentsevents\Service\ImageService.java
 
 package org.example.studentsevents.Service;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import com.cloudinary.Cloudinary;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
 
-    private final Path fileStorageLocation;
+    private final Cloudinary cloudinary; // Inject the Cloudinary bean we configured
 
     // --- Validation Constants ---
-    // Maximum file size set to 5 Megabytes.
-    private static final long MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
-    // The official, IANA-registered MIME types for allowed images.
+    private static final long MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
     private static final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList(
-            "image/jpeg", // .jpg and .jpeg
-            "image/png",  // .png
-            "image/webp", // .webp
-            "image/avif"  // .avif
+            "image/jpeg", "image/png", "image/webp", "image/avif"
     );
 
-    public ImageService() {
-        // This will create an "uploads" folder in the root directory of your project
-        this.fileStorageLocation = Paths.get("uploads").toAbsolutePath().normalize();
-
-        try {
-            Files.createDirectories(this.fileStorageLocation);
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
-        }
-    }
-
+    /**
+     * Uploads a file to Cloudinary and returns its secure, permanent URL.
+     * @param file The image file to upload.
+     * @return The public URL of the uploaded image.
+     */
     public String storeFile(MultipartFile file) {
-        // --- File Validation Block ---
+        // --- File Validation ---
         if (file == null || file.isEmpty()) {
             throw new IllegalStateException("Cannot store an empty file.");
         }
@@ -58,41 +40,19 @@ public class ImageService {
         if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
             throw new IllegalStateException("Invalid file type. Only JPG, PNG, WEBP, and AVIF images are permitted.");
         }
-        // --- End of Validation ---
-
-
-        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String fileExtension = "";
-        try {
-            fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-        } catch (Exception e) {
-            // No extension found, which is acceptable.
-        }
-
-        // Generate a unique filename to prevent conflicts
-        String newFileName = UUID.randomUUID().toString() + fileExtension;
 
         try {
-            Path targetLocation = this.fileStorageLocation.resolve(newFileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            // This is the core Cloudinary upload logic.
+            // It uploads the file's bytes and returns a Map of information.
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
 
-            return newFileName;
-        } catch (IOException ex) {
-            throw new RuntimeException("Could not store file " + newFileName + ". Please try again!", ex);
+            // The result map contains the 'secure_url', which is the permanent HTTPS link to the image.
+            return (String) uploadResult.get("secure_url");
+
+        } catch (IOException e) {
+            throw new RuntimeException("Could not store file with Cloudinary. Please try again!", e);
         }
     }
 
-    public Resource loadFileAsResource(String fileName) {
-        try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) {
-                return resource;
-            } else {
-                throw new RuntimeException("File not found: " + fileName);
-            }
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException("File not found: " + fileName, ex);
-        }
-    }
+    // The old loadFileAsResource method is no longer needed. You can delete it.
 }

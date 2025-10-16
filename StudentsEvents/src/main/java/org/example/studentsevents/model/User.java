@@ -52,10 +52,8 @@ public class User {
     )
     private List<Booking> bookings = new ArrayList<>();
 
-    // ... inside the User class
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id", referencedColumnName = "id")
-    private Image profilePicture;
+    @Column(length = 512) // Use a longer column for full URLs
+    private String profilePictureUrl;
 
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
