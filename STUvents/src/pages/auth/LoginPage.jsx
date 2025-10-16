@@ -80,10 +80,10 @@ export function LoginPage() {
             <hr style={{ flexGrow: 1, borderTop: '1px solid var(--border-color)' }} />
           </div>
 
-          <a href="http://localhost:8080/oauth2/authorization/google" className="button-secondary" style={{ width: '100%' }}>
-            {/* You can add a Google icon here later */}
-            Log In with Google
-          </a>
+          <a href={`${import.meta.env.VITE_API_URL}/oauth2/authorization/google`} className="button-secondary" style={{ width: '100%' }}>
+  {/* ... */}
+  Log In with Google
+</a>
           {/* ★★★ END OF NEW CODE ★★★ */}
           <p className="auth-switch-text">
             Don't have an account? <Link to="/register">Sign Up</Link>
