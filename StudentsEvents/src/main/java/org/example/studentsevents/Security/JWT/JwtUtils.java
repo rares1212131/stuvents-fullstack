@@ -35,7 +35,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    // UPDATE the existing method to use the new one for consistency
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         return generateTokenFromEmail(userPrincipal.getUsername());
@@ -49,7 +48,6 @@ public class JwtUtils {
         return Jwts.parserBuilder().setSigningKey(key()).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
-
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
@@ -69,7 +67,7 @@ public class JwtUtils {
 
     public String generateJwtTokenForOAuth2(Authentication authentication) {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
-        String email = oauth2User.getAttribute("email"); // The name attribute field
+        String email = oauth2User.getAttribute("email");
 
         return Jwts.builder()
                 .setSubject(email)

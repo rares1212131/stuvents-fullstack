@@ -19,7 +19,6 @@
   max-width: 450px;
 }
 
-/* Price Filter Specifics */
 .price-inputs {
   display: flex;
   align-items: center;
@@ -34,7 +33,6 @@
   font-size: 1rem;
 }
 
-/* Category Filter Specifics */
 .category-list {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -1,4 +1,4 @@
-// src/main/java/org/example/studentsevents/Exception/GlobalExceptionHandler.java
+
 
 package org.example.studentsevents.Exception;
 
@@ -18,16 +18,12 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // =====================================================================
-    // == THIS IS THE NEW, CRITICAL EXCEPTION HANDLER                     ==
-    // =====================================================================
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, WebRequest request) {
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", "Validation Failed");
 
-        // Extract field-specific error messages
         Map<String, String> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
 
@@ -48,14 +44,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
-    // A general handler for other unexpected errors
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
-        // In a real app, you would log this error: log.error("Unhandled exception", ex);
         Map<String, Object> body = new HashMap<>();
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("error", "Internal Server Error");
-        body.put("message", ex.getMessage()); // Or a generic "An unexpected error occurred"
+        body.put("message", ex.getMessage());
         body.put("path", request.getDescription(false).substring(4));
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);

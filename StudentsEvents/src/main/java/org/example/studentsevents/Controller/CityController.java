@@ -36,7 +36,6 @@ public class CityController {
         CityResponse city = cityService.getCityById(id);
         return ResponseEntity.ok(city);
     }
-
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CityResponse> updateCity(@PathVariable Long id, @Valid @RequestBody CityRequest cityRequest) {

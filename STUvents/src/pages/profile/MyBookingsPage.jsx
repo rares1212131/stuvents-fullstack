@@ -1,8 +1,7 @@
-// In file: src/pages/MyBookingsPage.jsx (REFACTORED and COMPLETE)
 
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-import * as bookingService from '../../services/bookingService'; // <-- IMPORT THE SERVICE
+import * as bookingService from '../../services/bookingService'; 
 import { Header } from '../../components/layout/Header';
 import './MyBookingsPage.css';
 
@@ -38,8 +37,6 @@ export function MyBookingsPage() {
     } else {
       setLoading(false);
     }
-  // We disable the exhaustive-deps warning because we intentionally want this
-  // to run ONLY when the page number changes.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 

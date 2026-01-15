@@ -15,7 +15,6 @@ export function SecondaryFilters({ categories, currentFilters, onFilterChange })
     onFilterChange('selectedCategories', selectedCategories);
     setActiveModal(null);
   };
-
   return (
     <div className="secondary-filters">
       <button onClick={() => setActiveModal('price')} className="filter-button">Price</button>

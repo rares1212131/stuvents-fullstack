@@ -19,7 +19,6 @@ export function RoleManagementModal({ user, allRoles, onClose, onSave }) {
     onSave(user.id, Array.from(selectedRoles));
     onClose();
   };
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>

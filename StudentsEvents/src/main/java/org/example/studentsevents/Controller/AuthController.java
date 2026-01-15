@@ -34,7 +34,6 @@ public class AuthController {
             JWTResponse jwtResponse = authService.loginUser(loginRequest);
             return ResponseEntity.ok(jwtResponse);
         } catch (DisabledException e) {
-            // Catch the specific "not verified" error and return a clear message
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
     }
@@ -46,12 +45,10 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    // ★★★ This is the endpoint the user clicks in the email ★★★
     @GetMapping("/verify-email")
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
         try {
             authService.verifyUser(token);
-            // This is a simple response. We will redirect on the frontend.
             return ResponseEntity.ok("<h1>Email Verified Successfully!</h1><p>You can now close this tab and log in.</p>");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("<h1>Error</h1><p>" + e.getMessage() + "</p>");
@@ -60,19 +57,15 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody String email) {
-        // We receive the email as a plain string in the request body
         try {
             authService.handleForgotPassword(email);
-            // Always return a generic success message for security
             return ResponseEntity.ok("If an account with that email exists, a password reset link has been sent.");
         } catch (Exception e) {
-            // Log the error but still return a generic success message
             System.err.println("Error in forgotPassword: " + e.getMessage());
             return ResponseEntity.ok("If an account with that email exists, a password reset link has been sent.");
         }
     }
 
-    // ★★★ ADD THIS SECOND NEW ENDPOINT ★★★
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordResetRequest request) {
         try {

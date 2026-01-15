@@ -1,8 +1,8 @@
 .auth-container {
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align to top */
-  padding-top: 120px; /* Space from the fixed header */
+  align-items: flex-start; 
+  padding-top: 120px; 
   min-height: 100vh;
   background-color: var(--background-color-main);
 }
@@ -46,7 +46,7 @@
 }
 
 .auth-form .button-primary {
-  width: 100%; /* Make button full width */
+  width: 100%; 
 }
 
 .auth-switch-text {

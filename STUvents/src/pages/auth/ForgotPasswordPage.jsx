@@ -1,4 +1,3 @@
-// In file: src/pages/auth/ForgotPasswordPage.jsx
 
 import { useState } from 'react';
 import { Header } from '../../components/layout/Header';
@@ -17,8 +16,6 @@ export function ForgotPasswordPage() {
     setError('');
     setMessage('');
     try {
-      // Send the email as a plain text string in the request body
-      // We need to specify the Content-Type header for this to work
       const response = await api.post('/auth/forgot-password', email, {
         headers: {
           'Content-Type': 'text/plain'
@@ -26,7 +23,6 @@ export function ForgotPasswordPage() {
       });
       setMessage(response.data);
     } catch (err) {
-      // Even on error, we show a generic message for security
       setMessage('If an account with that email exists, a password reset link has been sent.', err);
     } finally {
       setLoading(false);
@@ -42,8 +38,6 @@ export function ForgotPasswordPage() {
           <p style={{ color: 'var(--text-color-light)', textAlign: 'center', marginBottom: '1rem' }}>
             Enter your email address and we'll send you a link to reset your password.
           </p>
-
-          {/* This part of the form is only shown BEFORE a message is set */}
           {!message && (
             <>
               {error && <p className="error-message">{error}</p>}
@@ -62,8 +56,6 @@ export function ForgotPasswordPage() {
               </button>
             </>
           )}
-
-          {/* This part is shown AFTER the user submits the form */}
           {message && (
             <div className="message success" style={{ backgroundColor: '#e9f7ef', color: '#155724', border: '1px solid #c3e6cb' }}>
               <p>{message}</p>

@@ -1,12 +1,10 @@
-// In file: src/pages/OrganizerAtendeesPage.jsx (REFACTORED and COMPLETE)
 
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { Header } from '../../components/layout/Header';
-// import api from '../api/api'; // <-- No longer needed!
-import * as organizerService from '../../services/organizerService'; // <-- IMPORT THE SERVICE
-import '../admin/AdminEventsListPage.css'; // Reusing styles
+import * as organizerService from '../../services/organizerService';  
+import '../admin/AdminEventsListPage.css'; 
 
 export function OrganizerAtendeesPage() {
   const { id } = useParams();
@@ -19,10 +17,9 @@ export function OrganizerAtendeesPage() {
     const fetchAttendees = async () => {
       try {
         setLoading(true);
-        // We can use Promise.all to make both calls concurrently for better performance.
         const [eventRes, attendeesRes] = await Promise.all([
-            organizerService.getMyEventById(id),      // <-- USE SERVICE
-            organizerService.getEventAttendees(id) // <-- USE SERVICE
+            organizerService.getMyEventById(id),   
+            organizerService.getEventAttendees(id)
         ]);
         
         setEventName(eventRes.data.name);

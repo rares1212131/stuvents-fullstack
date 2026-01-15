@@ -24,7 +24,6 @@ public class BrevoEmailService {
     @Value("${brevo.sender.name:STUvents}")
     private String senderName;
 
-    // This method posts to Brevo's transactional email API
     public void sendEmailViaBrevo(String to, String subject, String htmlContent) {
         if (apiKey == null || apiKey.isBlank()) {
             throw new IllegalStateException("BREVO_API_KEY environment variable is not set.");

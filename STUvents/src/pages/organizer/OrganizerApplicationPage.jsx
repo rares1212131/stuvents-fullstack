@@ -1,11 +1,9 @@
-// In file: src/pages/OrganizerApplicationPage.jsx (REFACTORED and COMPLETE)
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../../components/layout/Header';
-// import api from '../api/api'; // <-- No longer needed!
-import * as organizerService from '../../services/organizerService'; // <-- IMPORT THE SERVICE
-import '../auth/AuthForm.css'; // Reusing the auth form styles for a centered layout
+import * as organizerService from '../../services/organizerService'; 
+import '../auth/AuthForm.css'; 
 
 export function OrganizerApplicationPage() {
   const [reason, setReason] = useState('');
@@ -24,7 +22,6 @@ export function OrganizerApplicationPage() {
 
     setLoading(true);
     try {
-      // USE THE SERVICE to make the API call
       await organizerService.applyToBeOrganizer(reason);
       alert('Application submitted successfully! Your application is now pending review.');
       navigate('/profile'); 

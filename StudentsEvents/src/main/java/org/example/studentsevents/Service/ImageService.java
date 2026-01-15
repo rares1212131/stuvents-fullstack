@@ -15,21 +15,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ImageService {
 
-    private final Cloudinary cloudinary; // Inject the Cloudinary bean we configured
+    private final Cloudinary cloudinary;
 
-    // --- Validation Constants ---
     private static final long MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
     private static final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList(
             "image/jpeg", "image/png", "image/webp", "image/avif"
     );
 
-    /**
-     * Uploads a file to Cloudinary and returns its secure, permanent URL.
-     * @param file The image file to upload.
-     * @return The public URL of the uploaded image.
-     */
     public String storeFile(MultipartFile file) {
-        // --- File Validation ---
         if (file == null || file.isEmpty()) {
             throw new IllegalStateException("Cannot store an empty file.");
         }
@@ -42,11 +35,7 @@ public class ImageService {
         }
 
         try {
-            // This is the core Cloudinary upload logic.
-            // It uploads the file's bytes and returns a Map of information.
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), Map.of());
-
-            // The result map contains the 'secure_url', which is the permanent HTTPS link to the image.
             return (String) uploadResult.get("secure_url");
 
         } catch (IOException e) {
@@ -54,5 +43,4 @@ public class ImageService {
         }
     }
 
-    // The old loadFileAsResource method is no longer needed. You can delete it.
 }

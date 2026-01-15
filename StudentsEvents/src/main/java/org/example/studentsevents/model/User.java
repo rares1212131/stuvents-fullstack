@@ -52,7 +52,7 @@ public class User {
     )
     private List<Booking> bookings = new ArrayList<>();
 
-    @Column(length = 512) // Use a longer column for full URLs
+    @Column(length = 512)
     private String profilePictureUrl;
 
     @JsonIgnore
@@ -62,23 +62,13 @@ public class User {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean verified = false;
 
-    /**
-     * A unique, randomly generated token sent to the user's email for verification.
-     * This will be nullable because it should be cleared after verification.
-     */
     @Column(unique = true)
     private String verificationToken;
 
-    /**
-     * The timestamp indicating when the verification token expires.
-     */
     private LocalDateTime verificationTokenExpiryDate;
     @Column(unique = true)
     private String passwordResetToken;
 
-    /**
-     * The timestamp indicating when the password reset token expires (e.g., 1 hour).
-     */
     private LocalDateTime resetTokenExpiryDate;
 
 }

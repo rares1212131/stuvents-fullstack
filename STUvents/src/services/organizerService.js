@@ -1,4 +1,3 @@
-// In file: src/services/organizerService.js
 
 import api from '../api/api';
 

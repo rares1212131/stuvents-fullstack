@@ -26,12 +26,7 @@ export function LoginPage() {
 
     try {
       const response = await api.post('/auth/login', { email, password });
-      
-      // Wait for the login function to completely finish
-      // The login function now returns the user data when complete
       await login(response.data);
-      
-      // Add a small delay to ensure all state updates are processed
       setTimeout(() => {
         navigate(from, { replace: true });
       }, 100);
@@ -81,10 +76,8 @@ export function LoginPage() {
           </div>
 
           <a href={`${import.meta.env.VITE_API_URL}/oauth2/authorization/google`} className="button-secondary" style={{ width: '100%' }}>
-  {/* ... */}
   Log In with Google
 </a>
-          {/* ★★★ END OF NEW CODE ★★★ */}
           <p className="auth-switch-text">
             Don't have an account? <Link to="/register">Sign Up</Link>
           </p>

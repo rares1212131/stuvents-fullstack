@@ -20,7 +20,7 @@ export function CategoryFilterModal({ allCategories, selectedCategories, onApply
   
   const handleClear = () => {
     setCheckedCategories(new Set());
-    onApply([]); // Apply immediately
+    onApply([]);
   };
 
   return (

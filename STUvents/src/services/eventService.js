@@ -1,4 +1,3 @@
-// In file: src/services/eventService.js
 
 import api from '../api/api';
 

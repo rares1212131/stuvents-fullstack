@@ -1,7 +1,6 @@
-// In file: src/pages/HomePage.jsx (REFACTORED WITH URL STATE)
 
 import { useState, useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom'; // <<< 1. Import useSearchParams
+import { useSearchParams } from 'react-router-dom'; 
 import * as eventService from '../services/eventService'; 
 
 import { Header } from '../components/layout/Header';
@@ -12,10 +11,7 @@ import { EventMap } from '../components/events/EventMap';
 import './HomePage.css';
 
 export function HomePage() {
-  // <<< 2. Get the tools to read and write to the URL's query string
   const [searchParams, setSearchParams] = useSearchParams();
-
-  // The component's internal state is now DRIVEN BY the URL.
   const [allEvents, setAllEvents] = useState([]);
   const [initialEvents, setInitialEvents] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -23,22 +19,18 @@ export function HomePage() {
   const [loading, setLoading] = useState(true);
   const [hoveredEventId, setHoveredEventId] = useState(null);
 
-  // <<< 3. Derive state from the URL search parameters instead of local state
-  // We use `useMemo` so these values are only recalculated when the searchParams string changes.
   const activeCity = useMemo(() => searchParams.get('city') || '', [searchParams]);
   const secondaryFilters = useMemo(() => ({
     priceRange: {
       min: searchParams.get('minPrice') || '',
       max: searchParams.get('maxPrice') || '',
     },
-    // `getAll` is used for parameters that can appear multiple times (e.g., &category=A&category=B)
+
     selectedCategories: searchParams.getAll('category') || [],
   }), [searchParams]);
 
-  // isMapViewActive is now a derived value. If there's a city in the URL, the map is active.
   const isMapViewActive = !!activeCity;
 
-  // This useEffect for fetching dropdowns remains the same
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
@@ -55,7 +47,6 @@ export function HomePage() {
     fetchDropdownData();
   }, []);
 
-  // This useEffect for fetching initial "trending" events remains the same
   useEffect(() => {
     const fetchInitialEvents = async () => {
       setLoading(true);
@@ -70,12 +61,10 @@ export function HomePage() {
     };
     fetchInitialEvents();
   }, []);
-  
-  // <<< 4. The main data fetching effect now depends on `activeCity` (derived from the URL)
+
   useEffect(() => {
-    // If there is no city selected in the URL, we don't need to fetch searched events.
     if (!activeCity) {
-      setAllEvents([]); // Clear any previous search results
+      setAllEvents([]); 
       return;
     }
 
@@ -93,22 +82,16 @@ export function HomePage() {
     };
 
     fetchSearchedEvents();
-  }, [activeCity]); // This effect re-runs ONLY when the city in the URL changes.
+  }, [activeCity]); 
 
-
-  // <<< 5. All handler functions now UPDATE THE URL instead of local state.
-  // Updating the URL will cause the component to re-render and the derived state (step 3) to update.
 
   const handleCitySelect = (cityName) => {
     if (cityName) {
-      // Set the city in the URL, which will trigger the fetch effect.
-      // We create a new URLSearchParams object to clear any old filters.
       setSearchParams({ city: cityName });
     }
   };
 
   const handleSecondaryFilterChange = (filterName, value) => {
-    // Create a new URLSearchParams object based on the current URL.
     const newSearchParams = new URLSearchParams(searchParams);
 
     if (filterName === 'priceRange') {
@@ -116,20 +99,15 @@ export function HomePage() {
       newSearchParams.set('maxPrice', value.max || '');
     }
     if (filterName === 'selectedCategories') {
-      // Delete all existing category params first
       newSearchParams.delete('category');
-      // Then add one for each selected category
       value.forEach(cat => newSearchParams.append('category', cat));
     }
     setSearchParams(newSearchParams);
   };
 
   const handleReset = () => {
-    // To reset, we just set the search params to an empty object.
     setSearchParams({});
   };
-  
-  // This filtering logic remains largely the same, but it now uses the URL-derived state.
   const filteredEvents = useMemo(() => {
     const sourceList = isMapViewActive ? allEvents : initialEvents;
     if (!isMapViewActive) return sourceList;
@@ -144,8 +122,6 @@ export function HomePage() {
       return true;
     });
   }, [allEvents, initialEvents, secondaryFilters, isMapViewActive]);
-
-  // This logic remains the same.
   const mapCenter = useMemo(() => {
     const listToUse = isMapViewActive ? filteredEvents : [];
     const firstEventWithCoords = listToUse.find(e => e.latitude != null && e.longitude != null);
@@ -162,7 +138,7 @@ export function HomePage() {
             <h1>Find Tickets Right Here</h1>
             <HeroSearchBar
               cities={cities}
-              selectedCity={activeCity} // <<< Pass the URL-derived state down as a prop
+              selectedCity={activeCity} 
               onCitySelect={handleCitySelect}
               onReset={handleReset}
             />
@@ -174,7 +150,7 @@ export function HomePage() {
             {isMapViewActive && (
               <SecondaryFilters
                 categories={categories}
-                currentFilters={secondaryFilters} // <<< Pass the URL-derived state down as a prop
+                currentFilters={secondaryFilters} 
                 onFilterChange={handleSecondaryFilterChange}
               />
             )}

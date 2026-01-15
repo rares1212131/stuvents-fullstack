@@ -94,8 +94,6 @@ public class OrganizerEventController {
         return ResponseEntity.noContent().build();
     }
 
-    // You would continue to add ticket type management endpoints here...
-
     private User getCurrentUser() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(userEmail)

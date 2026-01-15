@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.studentsevents.model.AvailabilityStatus; // You will need to create this enum
 import java.math.BigDecimal;
-
 @Getter
 @Setter
 @NoArgsConstructor

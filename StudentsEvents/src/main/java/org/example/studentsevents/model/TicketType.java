@@ -21,7 +21,7 @@ public class TicketType {
     private Long id;
 
     @Column(nullable = false)
-    private String name; // e.g., "General Admission", "VIP"
+    private String name;
 
     @Column(nullable = false)
     private BigDecimal price;

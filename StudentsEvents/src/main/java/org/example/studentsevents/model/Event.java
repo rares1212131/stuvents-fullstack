@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Table(name = "events")
 @Getter
@@ -33,8 +32,6 @@ public class Event {
     @Column(nullable = false)
     private String address;
 
-    //@Column(precision = 10, scale = 2)
-    //private BigDecimal price;
 
     private String externalLink;
 

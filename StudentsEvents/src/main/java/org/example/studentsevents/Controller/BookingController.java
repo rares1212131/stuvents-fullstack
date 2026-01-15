@@ -21,7 +21,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')") // Ensures only logged-in users can book
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
         bookingService.createBooking(bookingRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();

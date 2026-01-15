@@ -61,12 +61,10 @@ public class CategoryService {
             throw new IllegalStateException("Cannot delete this category because it is currently in use by one or more events.");
         }
 
-        // This check remains as a fallback.
         if (!categoryRepository.existsById(id)) {
-            throw new RuntimeException("Category not found with id: " + id); // Changed to RuntimeException
+            throw new RuntimeException("Category not found with id: " + id);
         }
 
-        // This line only runs if the check passes.
         categoryRepository.deleteById(id);
     }
 }

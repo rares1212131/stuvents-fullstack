@@ -1,10 +1,9 @@
-// In file: src/pages/AdminApplicationsPages.jsx (REFACTORED and COMPLETE)
+
 
 import { useState, useEffect } from 'react';
 import { Header } from '../../components/layout/Header';
-// import api from '../api/api'; // <-- No longer needed!
-import * as adminService from '../../services/adminService'; // <-- IMPORT THE SERVICE
-import './AdminEventsListPage.css'; // Reusing table styles
+import * as adminService from '../../services/adminService'; 
+import './AdminEventsListPage.css'; 
 
 export function AdminApplicationsPages() {
   const [applications, setApplications] = useState([]);
@@ -15,7 +14,6 @@ export function AdminApplicationsPages() {
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      // USE THE SERVICE to make the API call
       const response = await adminService.getPendingApplications();
       setApplications(response.data);
     } catch (err) {
@@ -45,7 +43,7 @@ export function AdminApplicationsPages() {
     try {
       await adminService.denyApplication(id);
       setMessage('Application denied.');
-      fetchApplications(); // Refresh the list
+      fetchApplications(); 
     } catch (err) {
       setError('Failed to deny application.');
       console.error(err);

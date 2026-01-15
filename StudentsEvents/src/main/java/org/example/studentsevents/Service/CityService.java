@@ -65,7 +65,6 @@ public class CityService {
             throw new RuntimeException("City not found with id: " + id);
         }
 
-        // This line only runs if the check passes.
         cityRepository.deleteById(id);
     }
 }

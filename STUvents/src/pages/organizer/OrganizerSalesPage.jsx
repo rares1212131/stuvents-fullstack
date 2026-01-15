@@ -1,4 +1,3 @@
-// In file: src/pages/OrganizerSalesPage.jsx 
 
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
@@ -27,8 +26,6 @@ export function OrganizerSalesPage() {
     };
     fetchSalesData();
   }, [id]);
-
-  // All calculation logic remains exactly the same
   const totalRevenue = eventData?.ticketTypes.reduce((acc, tt) => acc + (tt.price * tt.ticketsSold), 0) || 0;
   const totalTicketsSold = eventData?.ticketTypes.reduce((acc, tt) => acc + tt.ticketsSold, 0) || 0;
   const totalCapacity = eventData?.ticketTypes.reduce((acc, tt) => acc + tt.totalAvailable, 0) || 0;

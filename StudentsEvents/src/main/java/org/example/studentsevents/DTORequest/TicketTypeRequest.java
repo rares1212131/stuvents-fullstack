@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class TicketTypeRequest {
     private Long id;
-
     @NotBlank(message = "Ticket name cannot be empty.")
     private String name;
 

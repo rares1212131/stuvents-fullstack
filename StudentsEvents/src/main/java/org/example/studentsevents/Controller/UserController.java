@@ -28,10 +28,9 @@ public class UserController {
     @PreAuthorize("#id == principal.id")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
-            @Valid @RequestPart("userUpdate") UserUpdateRequest userUpdateRequest, // <-- Use @RequestPart for the DTO
+            @Valid @RequestPart("userUpdate") UserUpdateRequest userUpdateRequest,
             @RequestPart(value = "image", required = false) MultipartFile imageFile) {
 
-        // The service method now receives the DTO directly
         UserResponse updatedUser = userService.updateUser(id, userUpdateRequest, imageFile);
         return ResponseEntity.ok(updatedUser);
     }

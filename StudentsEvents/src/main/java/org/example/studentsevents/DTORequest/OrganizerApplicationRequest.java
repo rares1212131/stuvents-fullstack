@@ -1,4 +1,4 @@
-// CREATE NEW FILE: src/main/java/org/example/studentsevents/DTORequest/OrganizerApplicationRequest.java
+
 
 package org.example.studentsevents.DTORequest;
 

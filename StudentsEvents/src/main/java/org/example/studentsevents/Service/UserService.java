@@ -1,4 +1,4 @@
-// FILE: D:\students-fullstack\StudentsEvents\src\main\java\org\example\studentsevents\Service\UserService.java
+
 
 package org.example.studentsevents.Service;
 
@@ -24,7 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final ImageService imageService; // The refactored Cloudinary service
+    private final ImageService imageService;
     private final RoleRepository roleRepository;
 
 
@@ -57,9 +57,8 @@ public class UserService {
         existingUser.setFirstName(userUpdateRequest.getFirstName());
         existingUser.setLastName(userUpdateRequest.getLastName());
 
-        // *** MODIFIED PART ***
         if (imageFile != null && !imageFile.isEmpty()) {
-            // Store the new file and get its unique Cloudinary URL
+
             String imageUrl = imageService.storeFile(imageFile);
             existingUser.setProfilePictureUrl(imageUrl);
         }
@@ -89,8 +88,6 @@ public class UserService {
                 .map(Role::getName)
                 .collect(Collectors.toSet()));
 
-        // *** MODIFIED PART ***
-        // Directly set the URL from the user object. No more building URLs.
         userResponse.setProfilePictureUrl(user.getProfilePictureUrl());
 
         return userResponse;

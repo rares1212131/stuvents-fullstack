@@ -17,27 +17,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service to manage the business logic for organizer applications.
- */
 @Service
 @RequiredArgsConstructor
 public class ApplicationService {
 
     private final OrganizerApplicationRepository applicationRepository;
     private final UserRepository userRepository;
-    private final UserService userService; // We inject UserService to handle role changes
+    private final UserService userService;
 
-    /**
-     * Handles the logic for a user submitting a new application.
-     * Corresponds to: POST /api/organizer-applications
-     */
     @Transactional
     public void submitApplication(Long userId, OrganizerApplicationRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        // Prevent users from submitting more than one application
         if (applicationRepository.findByUser(user).isPresent()) {
             throw new IllegalStateException("You have already submitted an application.");
         }
@@ -52,25 +44,16 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
-    /**
-     * Retrieves the status of an application for the user who submitted it.
-     * Corresponds to: GET /api/organizer-applications/my-status
-     */
     @Transactional(readOnly = true)
     public OrganizerApplicationResponse getApplicationStatusForUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        // Find the application and map it to the response DTO
         return applicationRepository.findByUser(user)
                 .map(app -> new OrganizerApplicationResponse(app.getId(), app.getStatus(), app.getReason()))
-                .orElse(null); // Returns null if no application is found for this user
+                .orElse(null);
     }
 
-    /**
-     * Retrieves all PENDING applications for the admin to review.
-     * Corresponds to: GET /api/admin/organizer-applications
-     */
     @Transactional(readOnly = true)
     public List<AdminApplicationResponse> getPendingApplications() {
         return applicationRepository.findByStatus(ApplicationStatus.PENDING).stream()
@@ -86,39 +69,27 @@ public class ApplicationService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Approves an application, which promotes the user to an organizer.
-     * Corresponds to: POST /api/admin/organizer-applications/{id}/approve
-     */
     public void approveApplication(Long applicationId) {
         OrganizerApplication application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found with id: " + applicationId));
 
         User user = application.getUser();
 
-        // 1. Get the user's current roles
         List<String> currentRoleNames = user.getRoles().stream()
                 .map(Role::getName)
                 .collect(Collectors.toList());
 
-        // 2. Add the new role, ensuring no duplicates
         if (!currentRoleNames.contains("ROLE_ORGANIZER")) {
             currentRoleNames.add("ROLE_ORGANIZER");
         }
 
-        // 3. Use the new, powerful setUserRoles method to update the user
         userService.setUserRoles(user.getId(), currentRoleNames);
 
-        // 4. Update the application status
         application.setStatus(ApplicationStatus.APPROVED);
         application.setUpdatedAt(LocalDateTime.now());
         applicationRepository.save(application);
     }
 
-    /**
-     * Denies an application.
-     * Corresponds to: POST /api/admin/organizer-applications/{id}/deny
-     */
     @Transactional
     public void denyApplication(Long applicationId) {
         OrganizerApplication application = applicationRepository.findById(applicationId)

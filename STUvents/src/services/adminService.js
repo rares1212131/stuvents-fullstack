@@ -1,4 +1,3 @@
-// In file: src/services/adminService.js (COMPLETE FILE)
 
 import api from '../api/api';
 
@@ -24,7 +23,6 @@ export const denyApplication = (applicationId) => {
   return api.post(`/admin/organizer-applications/${applicationId}/deny`);
 };
 
-// --- Category Management ---
 
 export const createCategory = (name) => {
   return api.post('/categories', { name });
@@ -38,7 +36,7 @@ export const deleteCategory = (id) => {
   return api.delete(`/categories/${id}`);
 };
 
-// --- City Management ---
+
 
 export const createCity = (name) => {
   return api.post('/cities', { name });
@@ -53,8 +51,6 @@ export const deleteCity = (id) => {
 };
 
 
-// ★★★ ADD THIS NEW FUNCTION ★★★
-// This function sends a DELETE request to the /api/users/{userId} endpoint
 export const deleteUser = (userId) => {
   return api.delete(`/users/${userId}`);
 };

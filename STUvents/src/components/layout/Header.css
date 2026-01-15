@@ -1,9 +1,9 @@
-/* src/components/Header.css */
+
 .main-header {
   background-color: var(--background-color-card);
   border-bottom: 1px solid var(--border-color);
   padding: 0.5rem 0;
-  position: fixed; /* Make it stick to the top */
+  position: fixed; 
   top: 0;
   left: 0;
   width: 100%;
@@ -45,7 +45,7 @@
 }
 
 .profile-menu {
-  position: relative; /* This is crucial for positioning the dropdown */
+  position: relative; 
   display: flex;
   align-items: center;
 }
@@ -53,8 +53,8 @@
 .avatar-image {
   width: 40px;
   height: 40px;
-  border-radius: 50%; /* Makes it a circle */
-  object-fit: cover; /* Ensures the image covers the area without distortion */
+  border-radius: 50%; 
+  object-fit: cover; 
   cursor: pointer;
   border: 2px solid var(--border-color);
   transition: border-color 0.2s;
@@ -64,18 +64,17 @@
   border-color: var(--primary-color);
 }
 
-/* --- Dropdown Menu Styles --- */
 .dropdown-menu {
   position: absolute;
-  top: 55px; /* Position it below the avatar */
+  top: 55px; 
   right: 0;
   background-color: var(--background-color-card);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: 200px; /* Set a fixed width */
-  z-index: 1100; /* Make sure it appears above other content */
-  overflow: hidden; /* Ensures the border-radius applies to children */
+  width: 200px; 
+  z-index: 1100; 
+  overflow: hidden; 
   display: flex;
   flex-direction: column;
 }
@@ -97,7 +96,7 @@
 .dropdown-logout-button {
   width: 100%;
   border: none;
-  border-top: 1px solid var(--border-color); /* Separator line */
+  border-top: 1px solid var(--border-color); 
   background: none;
   font-family: inherit;
   font-size: 1rem;

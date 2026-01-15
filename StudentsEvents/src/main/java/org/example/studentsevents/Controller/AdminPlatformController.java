@@ -25,7 +25,6 @@ public class AdminPlatformController {
     private final EventService eventService;
     private final UserService userService;
 
-    // --- Application Management Endpoints ---
     @GetMapping("/organizer-applications")
     public ResponseEntity<List<AdminApplicationResponse>> getPendingApplications() {
         return ResponseEntity.ok(applicationService.getPendingApplications());
@@ -43,7 +42,6 @@ public class AdminPlatformController {
         return ResponseEntity.ok().build();
     }
 
-    // --- Platform-wide Event Oversight Endpoint ---
     @GetMapping("/events")
     public ResponseEntity<Page<AdminEventResponse>> getAllEvents(Pageable pageable) {
         return ResponseEntity.ok(eventService.getAllEventsForAdmin(pageable));

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController //This annotation combines @Controller and @ResponseBody
-@RequestMapping("/api/categories") //base URL for all endpoints in this controller
+@RestController
+@RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
@@ -28,7 +28,7 @@ public class CategoryController {
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         List<CategoryResponse> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok(categories); //.ok() is a shortcut for new ResponseEntity<>(..., HttpStatus.OK)
+        return ResponseEntity.ok(categories);
     }
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {

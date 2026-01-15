@@ -1,4 +1,3 @@
-// In file: src/pages/auth/ResetPasswordPage.jsx
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
@@ -20,7 +19,6 @@ export function ResetPasswordPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Real-time validation for the password fields
   useEffect(() => {
     if (formData.newPassword || formData.confirmPassword) {
       if (formData.newPassword.length > 0 && formData.newPassword.length < 8) {
@@ -46,7 +44,6 @@ export function ResetPasswordPage() {
         token: token,
         newPassword: formData.newPassword,
       });
-      // On success, redirect to login with a success message
       navigate('/login', { state: { message: 'Password reset successfully! Please log in.' } });
     } catch (err) {
       setError(err.response?.data || 'Failed to reset password. The link may be invalid or expired.');
@@ -55,7 +52,6 @@ export function ResetPasswordPage() {
     }
   };
 
-  // If the user somehow gets here without a token, show an error.
   if (!token) {
     return (
         <div>

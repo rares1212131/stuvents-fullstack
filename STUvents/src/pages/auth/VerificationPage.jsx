@@ -1,4 +1,3 @@
-// In file: src/pages/auth/VerificationPage.jsx
 
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -10,7 +9,7 @@ export function VerificationPage() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
 
-  const [verificationStatus, setVerificationStatus] = useState('verifying'); // 'verifying', 'success', 'error'
+  const [verificationStatus, setVerificationStatus] = useState('verifying'); 
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
@@ -27,8 +26,6 @@ export function VerificationPage() {
       } catch (err) {
         setVerificationStatus('error');
 
-        // ★★★ THIS IS THE FIX ★★★
-        // This ensures we always set a STRING as the error message.
         if (typeof err.response?.data === 'string') {
           setErrorMessage(err.response.data);
         } else {
@@ -39,7 +36,7 @@ export function VerificationPage() {
     
 
     verifyToken();
-  }, [token]); // The effect runs once when the component mounts and gets the token.
+  }, [token]); 
 
   const renderContent = () => {
     switch (verificationStatus) {

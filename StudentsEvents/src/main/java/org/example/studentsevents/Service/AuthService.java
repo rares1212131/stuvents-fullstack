@@ -1,4 +1,4 @@
-// Complete AuthService.java file with all changes
+
 package org.example.studentsevents.Service;
 
 import lombok.RequiredArgsConstructor;

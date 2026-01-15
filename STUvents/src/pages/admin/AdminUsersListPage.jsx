@@ -1,4 +1,3 @@
-// In file: src/pages/admin/AdminUsersListPage.jsx (COMPLETE FILE)
 
 import { useState, useEffect } from 'react';
 import { Header } from '../../components/layout/Header';
@@ -42,18 +41,14 @@ export function AdminUsersListPage() {
     }
   };
 
-  // ★★★ 1. ADD THIS NEW HANDLER FUNCTION ★★★
   const handleDeleteUser = async (userId, userEmail) => {
-    // Add a confirmation prompt to prevent accidental deletions
     if (!window.confirm(`Are you sure you want to permanently delete the user: ${userEmail}? This action cannot be undone.`)) {
-      return; // If the admin clicks "Cancel", stop the function
+      return; 
     }
 
     try {
-      // Call the new service function we created in Step 1
       await adminService.deleteUser(userId);
       alert('User deleted successfully!');
-      // Refresh the list of users to remove the deleted one from the view
       fetchUsers();
     } catch (err) {
       alert('Failed to delete user. The user might be an organizer of an event.');
@@ -92,8 +87,6 @@ export function AdminUsersListPage() {
                   <td>{user.roles.map(r => r.replace('ROLE_', '')).join(', ')}</td>
                   <td className="event-actions">
                     <button onClick={() => setSelectedUser(user)} className="button-secondary">Manage Roles</button>
-                    
-                    {/* ★★★ 2. ADD THE DELETE BUTTON HERE ★★★ */}
                     <button onClick={() => handleDeleteUser(user.id, user.email)} className="button-secondary button-danger">
                       Delete
                     </button>

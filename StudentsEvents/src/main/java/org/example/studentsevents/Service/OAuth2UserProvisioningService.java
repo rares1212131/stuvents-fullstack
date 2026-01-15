@@ -28,20 +28,16 @@ public class OAuth2UserProvisioningService {
         try {
             String email = oAuth2User.getAttribute("email");
             log.info("OAuth2 [TX_NEW] - Attempting to provision user with email: {}", email);
-
-            // Find the user using an Optiodal
             Optional<User> userOptional = userRepository.findByEmail(email);
 
             User user;
             if (userOptional.isPresent()) {
-                // --- UPDATE PATH ---
                 log.info("OAuth2 [TX_NEW]: Found existing user. Updating details.");
                 user = userOptional.get();
                 user.setFirstName(oAuth2User.getAttribute("given_name"));
                 user.setLastName(oAuth2User.getAttribute("family_name"));
                 user.setVerified(true);
             } else {
-                // --- CREATE PATH ---
                 log.info("OAuth2 [TX_NEW]: New user. Creating entity.");
                 user = new User();
                 user.setEmail(email);

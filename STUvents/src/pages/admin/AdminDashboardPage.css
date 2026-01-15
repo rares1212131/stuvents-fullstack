@@ -1,24 +1,23 @@
-/* This hero section is styled to look like your mock-up */
+
 .admin-dashboard-hero {
-  /* Pushes content below the fixed header */
   padding-top: 150px; 
   padding-bottom: 5rem;
   text-align: center;
-  background-color: #212529; /* Dark background */
+  background-color: #212529; 
   color: white;
 }
 
 .admin-dashboard-hero h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  max-width: 600px; /* Constrain width for better readability */
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .admin-dashboard-hero p {
   font-size: 1.25rem;
-  color: #adb5bd; /* Lighter grey for subtitle */
+  color: #adb5bd; 
   margin-bottom: 2.5rem;
   max-width: 550px;
   margin-left: auto;

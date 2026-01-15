@@ -1,6 +1,6 @@
 package org.example.studentsevents.DTORequest;
 
-// In file: src/main/java/org/example/studentsevents/DTORequest/BookingRequest.java
+
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

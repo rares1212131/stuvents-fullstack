@@ -14,17 +14,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List; // <<< IMPORT
+import java.util.List;
 import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
-
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final CategoryRepository categoryRepository; // <<< INJECT
-    private final CityRepository cityRepository;         // <<< INJECT
+    private final CategoryRepository categoryRepository;
+    private final CityRepository cityRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${app.admin.email}")
@@ -35,23 +34,20 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Step 1: Create default roles if they don't exist
         Role userRole = createRoleIfNotFound("ROLE_USER");
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
         Role organizerRole = createRoleIfNotFound("ROLE_ORGANIZER");
 
-        // Step 2: Create default Categories and Cities if they don't exist
         createCategoriesIfNotFound();
         createCitiesIfNotFound();
 
-        // Step 3: Create the admin user if it doesn't exist
         if (!userRepository.existsByEmail(adminEmail)) {
             User admin = new User();
             admin.setFirstName("Admin");
             admin.setLastName("User");
             admin.setEmail(adminEmail);
             admin.setPassword(passwordEncoder.encode(adminPassword));
-            admin.setVerified(true); // Make the default admin verified
+            admin.setVerified(true);
             admin.setRoles(Set.of(adminRole, userRole, organizerRole));
             userRepository.save(admin);
             System.out.println("Admin user created successfully!");
@@ -63,7 +59,6 @@ public class DataInitializer implements CommandLineRunner {
                 .orElseGet(() -> roleRepository.save(new Role(name)));
     }
 
-    // <<< NEW HELPER METHODS >>>
     private void createCategoriesIfNotFound() {
         if (categoryRepository.count() == 0) {
             List<Category> categories = List.of(

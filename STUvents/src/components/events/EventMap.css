@@ -32,7 +32,6 @@
   text-decoration: underline;
 }
 
-/* This is a Google Maps API override to remove default padding */
 .gm-style .gm-style-iw-c {
   padding: 12px !important;
 }
@@ -55,7 +54,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 150px; /* Allow scrolling for many events */
+  max-height: 150px; 
   overflow-y: auto;
 }
 

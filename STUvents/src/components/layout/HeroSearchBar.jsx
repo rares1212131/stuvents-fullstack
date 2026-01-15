@@ -1,4 +1,3 @@
-// src/components/HeroSearchBar.jsx
 
 
 import './HeroSearchBar.css';

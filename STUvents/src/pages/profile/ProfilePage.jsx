@@ -1,4 +1,3 @@
-// In file: src/pages/ProfilePage.jsx (REFACTORED and COMPLETE with full JSX)
 
 import { useState, useEffect } from 'react';
 import { Header } from '../../components/layout/Header';
@@ -178,7 +177,6 @@ export function ProfilePage() {
             </button>
           </div>
         </form>
-
         {!user.roles.includes('ROLE_ORGANIZER') && !user.roles.includes('ROLE_ADMIN') && (
             <div className="profile-form" style={{marginTop: '2rem'}}>
                 <h2>Organizer Application Status</h2>

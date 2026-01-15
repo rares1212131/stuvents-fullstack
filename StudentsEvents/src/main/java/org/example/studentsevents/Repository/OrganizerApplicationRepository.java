@@ -12,7 +12,6 @@ import java.util.Optional;
 @Repository
 public interface OrganizerApplicationRepository extends JpaRepository<OrganizerApplication, Long> {
 
-
     Optional<OrganizerApplication> findByUser(User user);
     List<OrganizerApplication> findByStatus(ApplicationStatus status);
 }

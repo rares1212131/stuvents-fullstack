@@ -1,10 +1,10 @@
-// In file: src/pages/EventEditorPage.jsx (REFACTORED and COMPLETE with full code)
+
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Header } from '../../components/layout/Header';
 import * as organizerService from '../../services/organizerService';
-import * as eventService from '../../services/eventService'; // We need this for categories/cities
+import * as eventService from '../../services/eventService'; 
 import './EventEditorPage.css';
 
 const EVENT_PLACEHOLDER_IMAGE = "/images/placeholder-image.avif";
@@ -13,8 +13,7 @@ export function EventEditorPage() {
   const { id } = useParams();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
-  
-  // State for the main event details form
+
   const [eventData, setEventData] = useState({
     name: '',
     description: '',
@@ -25,26 +24,18 @@ export function EventEditorPage() {
     eventImageUrl: null
   });
 
-  // State for the dynamic list of ticket types
   const [ticketTypes, setTicketTypes] = useState([
     { name: '', price: '', totalAvailable: '' }
   ]);
-  
-  // State specifically for image file handling
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
-  
-  // State for dropdown options and UI feedback
   const [categories, setCategories] = useState([]);
   const [cities, setCities] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // This effect fetches all necessary data when the component loads
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        // USE THE EVENT SERVICE
         const [catsRes, citiesRes] = await Promise.all([
           eventService.getAllCategories(),
           eventService.getAllCities()
@@ -60,7 +51,6 @@ export function EventEditorPage() {
     const fetchEventData = async () => {
       if (!isEditMode) return;
       try {
-        // USE THE ORGANIZER SERVICE
         const response = await organizerService.getMyEventById(id);
         const event = response.data;
         const formattedDate = event.eventDateTime ? event.eventDateTime.slice(0, 16) : '';
@@ -156,10 +146,8 @@ export function EventEditorPage() {
 
     try {
       if (isEditMode) {
-        // USE THE ORGANIZER SERVICE for updating
         await organizerService.updateMyEvent(id, formData);
       } else {
-        // USE THE ORGANIZER SERVICE for creating
         await organizerService.createMyEvent(formData);
       }
       alert(`Event ${isEditMode ? 'updated' : 'created'} successfully!`);

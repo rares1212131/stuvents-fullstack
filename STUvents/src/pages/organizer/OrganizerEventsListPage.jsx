@@ -15,7 +15,6 @@ export function OrganizerEventsListPage() {
   const fetchMyEvents = async () => {
     try {
       setLoading(true);
-      // USE THE SERVICE to make the API call
       const response = await organizerService.getMyEvents();
       setEvents(response.data.content);
     } catch (err) {
@@ -36,9 +35,8 @@ export function OrganizerEventsListPage() {
     }
 
     try {
-      // USE THE SERVICE to make the API call
       await organizerService.deleteMyEvent(eventId);
-      fetchMyEvents(); // Refresh the list after deletion
+      fetchMyEvents(); 
     } catch (err) {
       setError('Failed to delete event. Please try again.');
       console.error(err);

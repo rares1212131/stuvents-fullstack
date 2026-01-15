@@ -23,10 +23,8 @@ const renderHomePage = (initialRoute = '/') => {
   );
 };
 
-
 describe('HomePage Component', () => {
 
-  // <<< FIX #1: Add the ticketTypes property here >>>
   const mockInitialEvents = {
     data: {
       content: [
@@ -36,7 +34,6 @@ describe('HomePage Component', () => {
     },
   };
 
-  // <<< FIX #2: Add the ticketTypes property here as well >>>
   const mockSearchedEvents = {
     data: {
       content: [
@@ -44,7 +41,6 @@ describe('HomePage Component', () => {
       ],
     },
   };
-  
   beforeEach(() => {
     vi.resetAllMocks();
     vi.mocked(eventService.getAllCategories).mockResolvedValue({ data: [] });
@@ -54,8 +50,6 @@ describe('HomePage Component', () => {
   it('should fetch and display initial "trending" events on first load', async () => {
     vi.mocked(eventService.getInitialEvents).mockResolvedValue(mockInitialEvents);
     renderHomePage();
-
-    // The test logic here doesn't need to change.
     expect(screen.getByText(/loading events/i)).toBeInTheDocument();
     expect(await screen.findByText(/trending event one/i)).toBeInTheDocument();
     expect(await screen.findByText(/trending event two/i)).toBeInTheDocument();
@@ -66,8 +60,6 @@ describe('HomePage Component', () => {
     vi.mocked(eventService.getInitialEvents).mockResolvedValue({ data: { content: [] } });
     vi.mocked(eventService.getEventsByCity).mockResolvedValue(mockSearchedEvents);
     renderHomePage('/?city=NewYork');
-
-    // The test logic here also doesn't need to change.
     expect(await screen.findByText(/searched event alpha/i)).toBeInTheDocument();
     expect(eventService.getEventsByCity).toHaveBeenCalledTimes(1);
     expect(eventService.getEventsByCity).toHaveBeenCalledWith('NewYork');

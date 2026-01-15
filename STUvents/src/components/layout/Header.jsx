@@ -1,17 +1,15 @@
-// This is the new, updated content for Header.jsx
 
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom'; // <<< Import useLocation
+import { Link, useNavigate, useLocation } from 'react-router-dom'; 
 import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 const DEFAULT_AVATAR = "/icons/default-avatar.svg";
 
-// <<< The component now accepts an onLogoClick prop
 export function Header({ onLogoClick }) { 
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation(); // <<< Get the current page location
+  const location = useLocation(); 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const isOrganizer = user?.roles?.includes('ROLE_ORGANIZER');
@@ -23,14 +21,11 @@ export function Header({ onLogoClick }) {
     navigate('/');
   };
 
-  // <<< This is the new logic for the logo click
   const handleLogoClick = (e) => {
-    // Check if we are already on the homepage and if the onLogoClick function was provided
     if (location.pathname === '/' && onLogoClick) {
-      e.preventDefault(); // Prevent the default link navigation
-      onLogoClick(); // Call the reset function from HomePage
+      e.preventDefault(); 
+      onLogoClick(); 
     }
-    // If we are on any other page, the Link will navigate to "/" normally.
   };
 
   useEffect(() => {
@@ -48,7 +43,6 @@ export function Header({ onLogoClick }) {
   return (
     <header className="main-header">
       <div className="container">
-        {/* The Link now has an onClick handler */}
         <Link to="/" className="logo" onClick={handleLogoClick}>STUvents</Link>
         <nav className="main-nav">
           {isAuthenticated ? (

@@ -1,4 +1,4 @@
-// FILE: D:\students-fullstack\StudentsEvents\src\main\java\org\example\studentsevents\Service\EventService.java
+
 
 package org.example.studentsevents.Service;
 
@@ -33,12 +33,9 @@ public class EventService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
-    private final ImageService imageService; // The refactored Cloudinary service
+    private final ImageService imageService;
     private final GeocodingService geocodingService;
 
-    // =====================================================================================
-    // == 1. PUBLIC-FACING METHODS (For any site visitor)
-    // =====================================================================================
 
     @Transactional(readOnly = true)
     public EventResponse getPublicEventById(Long id) {
@@ -64,9 +61,6 @@ public class EventService {
         return eventPage.map(this::mapToPublicEventResponse);
     }
 
-    // =====================================================================================
-    // == 2. ORGANIZER-FOCUSED METHODS (Requires ownership, or Admin override)
-    // =====================================================================================
 
     @Transactional
     public OrganizerEventResponse createEventForOrganizer(EventRequest eventRequest, MultipartFile imageFile) {
@@ -79,9 +73,7 @@ public class EventService {
         newEvent.setCity(city);
         newEvent.setOrganizer(currentUser);
 
-        // *** MODIFIED PART ***
         if (imageFile != null && !imageFile.isEmpty()) {
-            // The storeFile method now returns a full Cloudinary URL
             String imageUrl = imageService.storeFile(imageFile);
             newEvent.setEventImageUrl(imageUrl);
         }
@@ -132,24 +124,22 @@ public class EventService {
         existingEvent.setCategory(category);
         existingEvent.setCity(city);
 
-        // *** MODIFIED PART ***
         if (imageFile != null && !imageFile.isEmpty()) {
             String imageUrl = imageService.storeFile(imageFile);
             existingEvent.setEventImageUrl(imageUrl);
         }
 
-        // Complex logic to safely add, update, or remove ticket types
         Map<Long, TicketType> existingTicketTypesMap = existingEvent.getTicketTypes().stream()
                 .collect(Collectors.toMap(TicketType::getId, tt -> tt));
         Set<Long> incomingTicketTypeIds = eventRequest.getTicketTypes().stream()
                 .map(TicketTypeRequest::getId).filter(Objects::nonNull).collect(Collectors.toSet());
         existingEvent.getTicketTypes().removeIf(ticketType -> !incomingTicketTypeIds.contains(ticketType.getId()));
         for (TicketTypeRequest ttRequest : eventRequest.getTicketTypes()) {
-            if (ttRequest.getId() == null) { // New ticket type
+            if (ttRequest.getId() == null) {
                 TicketType newTicketType = modelMapper.map(ttRequest, TicketType.class);
                 newTicketType.setEvent(existingEvent);
                 existingEvent.getTicketTypes().add(newTicketType);
-            } else { // Existing ticket type
+            } else {
                 TicketType ticketTypeToUpdate = existingTicketTypesMap.get(ttRequest.getId());
                 if (ticketTypeToUpdate != null) {
                     modelMapper.map(ttRequest, ticketTypeToUpdate);
@@ -225,9 +215,6 @@ public class EventService {
         eventRepository.save(event);
     }
 
-    // =====================================================================================
-    // == 3. ADMIN-ONLY METHODS
-    // =====================================================================================
 
     @Transactional(readOnly = true)
     public Page<AdminEventResponse> getAllEventsForAdmin(Pageable pageable) {
@@ -241,9 +228,6 @@ public class EventService {
         return mapToAdminEventResponse(event);
     }
 
-    // =====================================================================================
-    // == 4. PRIVATE HELPERS & MAPPING METHODS
-    // =====================================================================================
 
     private User getCurrentUser() {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -262,15 +246,13 @@ public class EventService {
         return event;
     }
 
-    // *** DELETED createImageUrl() method ***
 
     private EventResponse mapToPublicEventResponse(Event event) {
         EventResponse response = modelMapper.map(event, EventResponse.class);
         response.setTicketTypes(event.getTicketTypes().stream()
                 .map(this::mapToTicketTypeResponseWithAvailability)
                 .collect(Collectors.toList()));
-        // *** MODIFIED PART ***
-        response.setEventImageUrl(event.getEventImageUrl()); // Directly use the URL from the entity
+        response.setEventImageUrl(event.getEventImageUrl());
         return response;
     }
 
@@ -279,8 +261,7 @@ public class EventService {
         response.setTicketTypes(event.getTicketTypes().stream()
                 .map(this::mapToOrganizerTicketTypeResponse)
                 .collect(Collectors.toList()));
-        // *** MODIFIED PART ***
-        response.setEventImageUrl(event.getEventImageUrl()); // Directly use the URL from the entity
+        response.setEventImageUrl(event.getEventImageUrl());
         return response;
     }
 
@@ -289,8 +270,7 @@ public class EventService {
         response.setTicketTypes(event.getTicketTypes().stream()
                 .map(this::mapToOrganizerTicketTypeResponse)
                 .collect(Collectors.toList()));
-        // *** MODIFIED PART ***
-        response.setEventImageUrl(event.getEventImageUrl()); // Directly use the URL from the entity
+        response.setEventImageUrl(event.getEventImageUrl());
         return response;
     }
 

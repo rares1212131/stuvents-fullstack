@@ -1,21 +1,20 @@
-/* The dark, semi-transparent background that covers the whole page */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75); /* A darker overlay */
+  background-color: rgba(0, 0, 0, 0.75); 
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensures the modal is on top of all other content */
+  z-index: 1000; 
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* The main container for the modal content */
 .modal-content {
-  background-color: #212529; /* Matches your site's dark theme */
+  background-color: #212529; 
   color: #f8f9fa;
   padding: 2rem;
   border-radius: 12px;
@@ -29,7 +28,6 @@
   animation: scaleUp 0.3s ease-in-out forwards;
 }
 
-/* Header section with title and close button */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -58,14 +56,12 @@
   color: #f8f9fa;
 }
 
-/* Main body of the modal */
 .modal-body {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* The box showing the summary of what's being purchased */
 .order-summary {
   background-color: #343a40;
   padding: 1.25rem;
@@ -89,7 +85,6 @@
   border-top: 1px solid #495057;
 }
 
-/* Mock credit card form section */
 .payment-form {
   margin-top: 1rem;
 }
@@ -133,24 +128,21 @@
 }
 
 .form-row .form-group {
-  flex: 1; /* Makes the inputs in a row share space equally */
+  flex: 1; 
 }
 
-/* Footer section for the final action button */
 .modal-footer {
   display: flex;
   justify-content: flex-end;
   margin-top: 1rem;
 }
 
-/* Re-use your existing primary button style */
 .modal-footer .button-primary {
   width: 100%;
   font-size: 1.1rem;
   padding: 0.85rem;
 }
 
-/* Animations for a smoother appearance */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

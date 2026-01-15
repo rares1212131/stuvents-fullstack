@@ -1,12 +1,10 @@
-// In file: src/pages/auth/PleaseVerifyPage.jsx
 
 import { useLocation } from 'react-router-dom';
 import { Header } from '../../components/layout/Header';
-import './AuthForm.css'; // We can reuse the auth form styles for a centered layout
+import './AuthForm.css'; 
 
 export function PleaseVerifyPages() {
   const location = useLocation();
-  // We can try to get the email from the state passed by the registration page for a better message
   const email = location.state?.email;
 
   return (

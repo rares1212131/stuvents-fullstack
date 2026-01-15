@@ -28,7 +28,7 @@ public class EventRequest {
     @NotBlank(message = "Address cannot be empty")
     private String address;
 
-    private String externalLink; // This can be optional, so no validation
+    private String externalLink;
 
     @NotNull(message = "Category ID cannot be null")
     private Long categoryId;
@@ -37,5 +37,5 @@ public class EventRequest {
     private Long cityId;
 
     @NotEmpty(message = "Event must have at least one ticket type")
-    private List<@Valid TicketTypeRequest> ticketTypes; // @Valid validates each item in the list
+    private List<@Valid TicketTypeRequest> ticketTypes;
 }

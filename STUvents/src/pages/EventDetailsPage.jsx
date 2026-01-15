@@ -1,4 +1,3 @@
-// In file: src/pages/EventDetailsPage.jsx (REFACTORED and COMPLETE)
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,7 +28,6 @@ export function EventDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // State for the modal and booking process
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [isBooking, setIsBooking] = useState(false);
@@ -39,7 +37,6 @@ export function EventDetailsPage() {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        // USE THE SERVICE to fetch the event by its ID from the URL
         const response = await eventService.getEventById(id);
         setEvent(response.data);
       } catch (err) {
@@ -52,8 +49,6 @@ export function EventDetailsPage() {
     fetchEvent();
   }, [id]);
 
-  // This function is passed down to the TicketPurchaseCard.
-  // It prepares the data for the modal.
   const handlePurchaseInitiate = (ticket, quantity) => {
     setBookingDetails({
       eventName: event.name,
@@ -106,7 +101,6 @@ export function EventDetailsPage() {
       <Header />
       <main className="container event-details-page">
         <div className="event-details-layout">
-          {/* Left Column */}
           <div className="event-info-column">
             <h1>{event.name}</h1>
             <p className="event-description">{event.description}</p>

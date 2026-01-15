@@ -1,12 +1,11 @@
-import './PaymentModal.css'; // Make sure you create this CSS file
+import './PaymentModal.css'; 
 
 export function PaymentModal({ isOpen, onClose, onConfirm, bookingDetails, isLoading, error }) {
-  // If the modal isn't told to be open, it renders nothing.
+
   if (!isOpen) {
     return null;
   }
 
-  // A null check for bookingDetails to prevent errors on the first render
   if (!bookingDetails) {
     return null;
   }
@@ -48,7 +47,6 @@ export function PaymentModal({ isOpen, onClose, onConfirm, bookingDetails, isLoa
               </div>
             </div>
           </div>
-          {/* Display any booking errors directly in the modal */}
           {error && <p className="error-message" style={{textAlign: 'center'}}>{error}</p>}
         </div>
 

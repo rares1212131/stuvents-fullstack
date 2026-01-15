@@ -19,9 +19,7 @@ export function AuthProvider({ children }) {
       delete api.defaults.headers.common['Authorization'];
       localStorage.removeItem('authToken');
     }
-  }, [token]);//it updates the api's token so that it can make calls to restricted parts of the application
-
-  //create a separate async function to get the current user data because it has to be used in many places, callBack because the function have to be saved and not created a new one at every render even if the user has not changed, because it will encounter an infinite loop.
+  }, [token]);
   const fetchUserData = useCallback(async () => {
     if (token) {
       try {
@@ -47,9 +45,6 @@ export function AuthProvider({ children }) {
     };
     initializeAuth();
   }, [token, fetchUserData]);
-  //use effect to fetch the user's data which has in the dependency array the token and the function created, every variable and function used has to be in the dependency array.
-
-  //function to refresh the data of a user mostly used in data profile change, but with delay
   const refreshUser = useCallback(async () => {
     if (token) {
       try {
@@ -104,7 +99,6 @@ export function AuthProvider({ children }) {
   if (loading) {
     return <div>Loading Application...</div>;
   }
-   //auth context to avoid prop drilling
   return (
     <AuthContext.Provider value={value}>
       {children}

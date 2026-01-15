@@ -1,4 +1,3 @@
-/* src/components/HeroSearchBar.css */
 
 .hero-search-bar {
   background-color: white;
@@ -6,12 +5,11 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   display: flex;
   width: 100%;
-  max-width: 600px; /* Can be smaller now */
+  max-width: 600px; 
   margin: 2rem auto 0;
   border: 1px solid #e0e0e0;
 }
 
-/* This class is now the main section and takes up all available space */
 .search-section.where-section {
   flex: 1;
   padding: 0.75rem 1.5rem;
@@ -34,7 +32,7 @@
   background-color: transparent;
   color: #6c757d;
   font-family: inherit;
-  cursor: pointer; /* Indicates the select is interactive */
+  cursor: pointer; 
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;

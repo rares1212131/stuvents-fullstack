@@ -24,7 +24,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtUtils jwtUtils;
     private final OAuth2UserProvisioningService provisioningService;
 
-    @Value("${app.frontend.url}") // <<< 2. ADD THIS LINE to inject the URL from application.properties
+    @Value("${app.frontend.url}")
     private String frontendUrl;
 
     private static final Logger log = LoggerFactory.getLogger(OAuth2LoginSuccessHandler.class);
@@ -40,9 +40,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             String jwt = jwtUtils.generateTokenFromEmail(user.getEmail());
 
-            // vvv 3. MODIFY THIS LINE vvv
             String redirectUrl = frontendUrl + "/oauth2/redirect?token=" + jwt;
-            // Previously, this was hardcoded to "http://localhost:5173/..."
+
 
             log.info("Redirecting to: {}", redirectUrl);
             response.sendRedirect(redirectUrl);
@@ -51,7 +50,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         } catch (Exception e) {
             log.error("=== OAuth2 Success Handler Error ===", e);
 
-            // vvv 4. MODIFY THIS LINE AS WELL vvv
             response.sendRedirect(frontendUrl + "/oauth2/redirect?error=authentication_failed");
         }
     }

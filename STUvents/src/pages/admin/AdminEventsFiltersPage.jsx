@@ -1,35 +1,23 @@
-// In file: src/pages/admin/AdminEventsFiltersPage.jsx (COMPLETE with full JSX)
 
 import { useState, useEffect } from 'react';
 import { Header } from '../../components/layout/Header';
-// No longer importing 'api' directly
-import * as adminService from '../../services/adminService'; // For Create, Update, Delete operations
-import * as eventService from '../../services/eventService'; // For Read (fetching) operations
-import './AdminEventsListPage.css'; // Reusing some table styles
+import * as adminService from '../../services/adminService';  
+import * as eventService from '../../services/eventService'; 
+import './AdminEventsListPage.css'; 
 import './AdminEventsFiltersPage.css';
 
 
 export function AdminEventsFiltersPage() {
-  // State for the lists of items
   const [categories, setCategories] = useState([]);
   const [cities, setCities] = useState([]);
-  
-  // State for the "add new" input fields
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCityName, setNewCityName] = useState('');
-
-  // General loading and error state
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  // State to control the edit modal
   const [editingItem, setEditingItem] = useState(null);
-
-  // Function to fetch the initial data for both lists
   const fetchData = async () => {
     try {
       setLoading(true);
-      // Use the eventService for fetching the lists
       const [catsRes, citiesRes] = await Promise.all([
         eventService.getAllCategories(),
         eventService.getAllCities()
@@ -42,65 +30,55 @@ export function AdminEventsFiltersPage() {
       setLoading(false);
     }
   };
-
-  // Fetch data when the component first mounts
   useEffect(() => {
     fetchData();
   }, []);
-
-  // Handler for adding a new category or city
   const handleAddNew = async (type, name, setNameCallback) => {
     if (!name.trim()) {
       alert('Name cannot be empty.');
       return;
     }
     try {
-      // Use the adminService for creating new items
       if (type === 'category') {
         await adminService.createCategory(name);
       } else {
         await adminService.createCity(name);
       }
-      setNameCallback(''); // Clear the input field
-      fetchData(); // Refresh the list
+      setNameCallback(''); 
+      fetchData(); 
     } catch (err) {
       alert(`Error adding item: ${err.response?.data?.message || 'Server error'}`);
     }
   };
-
-  // Handler for deleting a category or city
   const handleDelete = async (type, id) => {
     if (!window.confirm(`Are you sure you want to delete this item? This may affect existing events.`)) {
       return;
     }
     try {
-      // Use the adminService for deleting items
       if (type === 'category') {
         await adminService.deleteCategory(id);
       } else {
         await adminService.deleteCity(id);
       }
-      fetchData(); // Refresh the list
+      fetchData(); 
     } catch (err) {
       alert(`Error deleting item: ${err.response?.data?.message || 'Server error'}`);
     }
   };
 
-  // Handler for saving changes from the edit modal
   const handleUpdate = async () => {
     if (!editingItem || !editingItem.name.trim()) {
       alert('Name cannot be empty.');
       return;
     }
     try {
-      // Use the adminService for updating items
       if (editingItem.endpoint === 'categories') {
         await adminService.updateCategory(editingItem.id, editingItem.name);
       } else {
         await adminService.updateCity(editingItem.id, editingItem.name);
       }
-      setEditingItem(null); // Close the modal
-      fetchData(); // Refresh the list
+      setEditingItem(null); 
+      fetchData(); 
     } catch (err) {
       alert(`Error updating item: ${err.response?.data?.message || 'Server error'}`);
     }
@@ -121,7 +99,6 @@ export function AdminEventsFiltersPage() {
         {error && <p className="centered-message error-message">{error}</p>}
 
         <div className="filters-management-grid">
-          {/* CATEGORIES SECTION */}
           <section className="management-section">
             <h2>Categories</h2>
             <form className="add-form" onSubmit={(e) => { e.preventDefault(); handleAddNew('category', newCategoryName, setNewCategoryName); }}>
@@ -145,8 +122,6 @@ export function AdminEventsFiltersPage() {
               ))}
             </div>
           </section>
-
-          {/* CITIES SECTION */}
           <section className="management-section">
             <h2>Cities</h2>
             <form className="add-form" onSubmit={(e) => { e.preventDefault(); handleAddNew('city', newCityName, setNewCityName); }}>
@@ -172,15 +147,13 @@ export function AdminEventsFiltersPage() {
           </section>
         </div>
       </div>
-
-      {/* EDIT MODAL - Renders conditionally */}
       {editingItem && (
         <div className="modal-overlay" onClick={() => setEditingItem(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Edit Item</h3>
             <input 
               type="text"
-              className="add-form input" // Reusing styles from the add form
+              className="add-form input"
               value={editingItem.name}
               onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
             />

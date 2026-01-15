@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-// This component now receives a function to call when the user clicks purchase
 export function TicketPurchaseCard({ ticketTypes, onPurchaseInitiate }) {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
@@ -10,8 +9,7 @@ export function TicketPurchaseCard({ ticketTypes, onPurchaseInitiate }) {
   const [selection, setSelection] = useState({ ticketId: null, quantity: '' });
 
   const handleTicketSelect = (ticketId, maxQuantity) => {
-    // If the clicked ticket is already selected, do nothing.
-    // If a new ticket is selected, reset quantity to 1.
+
     if (ticketId !== selection.ticketId && maxQuantity > 0) {
       setSelection({ ticketId: ticketId, quantity: 1 });
     }
@@ -24,13 +22,11 @@ export function TicketPurchaseCard({ ticketTypes, onPurchaseInitiate }) {
       return;
     }
     const newQuantity = parseInt(value, 10);
-    // Ensure quantity is within valid range
     if (!isNaN(newQuantity) && newQuantity >= 1 && newQuantity <= maxQuantity) {
       setSelection({ ...selection, quantity: newQuantity });
     }
   };
 
-  // This is the key change: it calls a function from its parent instead of doing the work itself.
   const handlePurchase = () => {
     const quantityToPurchase = parseInt(selection.quantity, 10);
     if (isNaN(quantityToPurchase) || quantityToPurchase < 1) {
@@ -39,8 +35,6 @@ export function TicketPurchaseCard({ ticketTypes, onPurchaseInitiate }) {
     }
 
     const selectedTicket = ticketTypes.find(t => t.id === selection.ticketId);
-    
-    // Tell the parent component, "Hey, the user wants to buy this ticket and this many."
     onPurchaseInitiate(selectedTicket, quantityToPurchase);
   };
 
@@ -74,7 +68,7 @@ export function TicketPurchaseCard({ ticketTypes, onPurchaseInitiate }) {
                     max={ticket.maxPurchaseQuantity}
                     value={selection.quantity}
                     onChange={(e) => handleQuantityChange(e, ticket.maxPurchaseQuantity)}
-                    onClick={(e) => e.stopPropagation()} // Prevents the whole card from being re-selected
+                    onClick={(e) => e.stopPropagation()} 
                     autoFocus
                   />
                 </div>
@@ -85,8 +79,7 @@ export function TicketPurchaseCard({ ticketTypes, onPurchaseInitiate }) {
             </div>
           );
         })}
-      </div>
-      
+      </div>    
       {isAuthenticated ? (
         <button
           className="button-primary"

@@ -27,12 +27,6 @@ public class BookingService {
     private final TicketTypeRepository ticketTypeRepository;
     private final ModelMapper modelMapper;
 
-    /**
-     * Creates a booking for the currently authenticated user for a specific ticket type.
-     * This method performs validation to ensure tickets are available.
-     * @param bookingRequest DTO containing the ticketTypeId to be purchased.
-     * @return A DTO representing the newly created booking.
-     */
     @Transactional
     public void createBooking(BookingRequest bookingRequest) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -66,11 +60,6 @@ public class BookingService {
         }
     }
 
-    /**
-     * Retrieves a paginated list of all bookings made by the currently authenticated user.
-     * @param pageable Pagination information.
-     * @return A page of the user's bookings.
-     */
     @Transactional(readOnly = true)
     public Page<BookingResponse> getMyBookings(Pageable pageable) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();

@@ -6,7 +6,6 @@ import './EventMap.css';
 const MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 export function EventMap({ events, center, hoveredEventId }) {
-  // State for a single selected marker
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedCluster, setSelectedCluster] = useState(null);
 
@@ -16,10 +15,8 @@ export function EventMap({ events, center, hoveredEventId }) {
   });
 
   const handleClusterClick = useCallback((cluster) => {
-    // Get all the markers inside the clicked cluster
     const markers = cluster.getMarkers();
-    
-    // Find all the corresponding event data for those markers
+  
     const clusterEvents = events.filter(event => 
       markers.some(marker => 
         marker.getPosition().lat() === event.latitude && 
@@ -27,7 +24,6 @@ export function EventMap({ events, center, hoveredEventId }) {
       )
     );
 
-    // If there's more than one event, set the selected cluster state
     if (clusterEvents.length > 1) {
       setSelectedEvent(null);
       setSelectedCluster({
@@ -70,7 +66,7 @@ export function EventMap({ events, center, hoveredEventId }) {
       }}
     >
       <MarkerClustererF 
-        onClick={handleClusterClick} // <<< Attach our new click handler to the clusterer
+        onClick={handleClusterClick} 
       >
         {(clusterer) =>
           events.map((event) =>
@@ -81,7 +77,7 @@ export function EventMap({ events, center, hoveredEventId }) {
                 icon={hoveredEventId === event.id ? hoverIcon : defaultIcon}
                 zIndex={hoveredEventId === event.id ? 100 : 1}
                 onClick={() => {
-                  setSelectedCluster(null); // Close cluster window if open
+                  setSelectedCluster(null); 
                   setSelectedEvent(event);
                 }}
                 clusterer={clusterer}

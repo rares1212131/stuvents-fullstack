@@ -20,7 +20,6 @@ public class DebugController {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-
     @GetMapping("/data")
     public ResponseEntity<?> getInitialData() {
         List<Role> roles = roleRepository.findAll();

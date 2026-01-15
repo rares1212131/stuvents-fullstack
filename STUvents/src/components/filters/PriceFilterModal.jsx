@@ -9,7 +9,6 @@ export function PriceFilterModal({ currentRange, onApply, onClose }) {
     onApply({ min: minPrice, max: maxPrice });
     onClose(); 
   };
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="filter-modal-content" onClick={(e) => e.stopPropagation()}>

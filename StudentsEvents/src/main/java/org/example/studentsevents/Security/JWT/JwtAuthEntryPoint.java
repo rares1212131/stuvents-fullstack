@@ -19,7 +19,6 @@ import java.util.Map;
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {

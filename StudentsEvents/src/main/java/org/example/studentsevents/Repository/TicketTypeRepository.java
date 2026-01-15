@@ -11,8 +11,6 @@ import java.util.Optional; // <-- Make sure this is imported
 @Repository
 public interface TicketTypeRepository extends JpaRepository<TicketType, Long> {
 
-    // <<< THIS IS THE FIX >>>
-    // Add this new method with the Lock annotation.
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<TicketType> findById(Long id);
 }

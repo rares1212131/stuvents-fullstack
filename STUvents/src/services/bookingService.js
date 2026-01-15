@@ -1,6 +1,5 @@
 
 import api from '../api/api';
-
 export const createBooking = (ticketTypeId, quantity) => {
   return api.post('/bookings', { ticketTypeId, quantity });
 };
