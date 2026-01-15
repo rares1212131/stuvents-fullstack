@@ -70,7 +70,7 @@ https://github.com/user-attachments/assets/2e0ba2b1-ed64-4bc9-b454-5368935ddcea
 
 ##  Tech Stack
 
-### Backend
+### Backend (StudentsEvents)
 *   **Framework:** Java 17, Spring Boot 3
 *   **Security:** Spring Security (JWT Auth, Google OAuth2, Role-Based Access)
 *   **Database:** PostgreSQL (Production), H2 (Testing)
@@ -79,7 +79,7 @@ https://github.com/user-attachments/assets/2e0ba2b1-ed64-4bc9-b454-5368935ddcea
     *   **Cloudinary:** Image hosting.
     *   **Brevo:** Transactional emails (Verification/Forgot Password).
 
-### Frontend
+### Frontend (STUvents)
 *   **Framework:** React (Vite)
 *   **Styling:** CSS Modules / Tailwind
 *   **State:** React Context
