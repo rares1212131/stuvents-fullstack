@@ -119,6 +119,6 @@ Reliability was a key focus of development. The application includes a comprehen
 
 ## 📧 Contact
 
-**[Rares Palade]**
-*   [https://www.linkedin.com/in/rares-palade-140b311ba/]
-*   [rrspld@gmail.com]
+**Rares Palade**
+*   https://www.linkedin.com/in/rares-palade-140b311ba/
+*   rrspld@gmail.com
