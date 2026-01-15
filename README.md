@@ -13,7 +13,7 @@ STUvents is a comprehensive event ticketing and management platform designed to 
 
 ---
 
-## 🎥 Project Workflows & Role-Based Access
+##  Project Workflows & Role-Based Access
 
 This project implements a strict hierarchy of roles: **User**, **Organizer**, and **Admin**.
 
@@ -56,7 +56,7 @@ This project implements a strict hierarchy of roles: **User**, **Organizer**, an
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Backend
 *   **Framework:** Java 17, Spring Boot 3
@@ -79,7 +79,7 @@ This project implements a strict hierarchy of roles: **User**, **Organizer**, an
 
 ---
 
-## 🧪 Testing & Quality Assurance
+##  Testing & Quality Assurance
 
 Reliability was a key focus of development. The application includes a comprehensive test suite.
 
@@ -91,7 +91,7 @@ Reliability was a key focus of development. The application includes a comprehen
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 1.  **Clone the repository**
 2.  **Configure Environment Variables** (Create a `.env` file with DB, Cloudinary, and Google Maps keys).
