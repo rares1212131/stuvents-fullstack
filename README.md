@@ -30,6 +30,10 @@ This project implements a strict hierarchy of roles: **User**, **Organizer**, an
 
 <!-- DRAG AND DROP YOUR USER VIDEO HERE -->
 
+https://github.com/user-attachments/assets/fec98567-a3db-4340-b1be-01cd209cd3d9
+
+
+
 
 ### 2. Organizer Workflow
 *Inherits all User features, plus management capabilities.*
@@ -43,6 +47,10 @@ This project implements a strict hierarchy of roles: **User**, **Organizer**, an
 <!-- DRAG AND DROP YOUR ORGANIZER VIDEO HERE -->
 
 
+https://github.com/user-attachments/assets/433f2260-c4e4-41bd-b80b-eafa58847a7c
+
+
+
 ### 3. Admin Workflow
 *Inherits all User and Organizer features, plus platform oversight.*
 
@@ -52,6 +60,10 @@ This project implements a strict hierarchy of roles: **User**, **Organizer**, an
 *   **Platform Filters:** Create or Delete Categories and Cities available in the app.
 
 <!-- DRAG AND DROP YOUR ADMIN VIDEO HERE -->
+
+
+https://github.com/user-attachments/assets/2e0ba2b1-ed64-4bc9-b454-5368935ddcea
+
 
 
 ---
