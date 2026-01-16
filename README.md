@@ -103,19 +103,6 @@ Reliability was a key focus of development. The application includes a comprehen
 
 ---
 
-##  Getting Started
-
-1.  **Clone the repository**
-2.  **Configure Environment Variables** (Create a `.env` file with DB, Cloudinary, and Google Maps keys).
-3.  **Run with Docker:**
-    ```bash
-    docker-compose up --build
-    ```
-4.  **Access:**
-    *   Frontend: `http://localhost:5173`
-    *   Backend: `http://localhost:8080`
-
----
 
 ## 📧 Contact
 
